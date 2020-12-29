@@ -1,10 +1,9 @@
-Optimal Reciprocal Collision Avoidance
-======================================
+Optimal Reciprocal Collision Avoidance for Java
+===============================================
 
-<http://gamma.cs.unc.edu/RVO2/>
+<https://gamma.cs.unc.edu/RVO2/>
 
-[![Build Status](https://travis-ci.org/snape/RVO2-Java.svg?branch=master)](https://travis-ci.org/snape/RVO2-Java)
-[![Build status](https://ci.appveyor.com/api/projects/status/j1sn29bhg5iixysq/branch/master?svg=true)](https://ci.appveyor.com/project/snape/RVO2-Java)
+![Build Status](https://github.com/snape/RVO2-Java/workflows/ci/badge.svg?branch=master)
 
 Copyright 2008 University of North Carolina at Chapel Hill
 
@@ -12,7 +11,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-<http://www.apache.org/licenses/LICENSE-2.0>
+<https://www.apache.org/licenses/LICENSE-2.0>
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,

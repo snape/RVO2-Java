@@ -1,2 +1,3 @@
-*.class
-*.jar
+/_build/
+/.gradle/
+/bazel-*

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Class-Path: @RVOJava_COMMONS_MATH3_JAR_FILE_NAME@
+Name: @RVOJava_JAR_CLASSES_PREFIX@/
+Specification-Title: @PROJECT_DESCRIPTION@
+Specification-Version: @PROJECT_VERSION@
+Specification-Vendor: @RVOJava_PACKAGE_VENDOR@
+Implementation-Title: @RVOJava_PACKAGE_NAME@
+Implementation-Version: @PROJECT_VERSION@
+Implementation-Vendor: @RVOJava_PACKAGE_VENDOR@
