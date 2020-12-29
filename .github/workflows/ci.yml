@@ -62,6 +62,47 @@ jobs:
         run: bazel test ...
         shell: bash
 
+  cmake_centos:
+    name: cmake centos latest
+    runs-on: ubuntu-latest
+    container: centos:latest
+    steps:
+      - name: pre-checkout setup
+        run: |
+          dnf install -q -y \
+            ca-certificates \
+            glibc-langpack-en \
+            git
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: post-checkout setup
+        run: |
+          dnf install -q -y \
+            cmake \
+            java-11-openjdk-devel \
+            redhat-lsb-core \
+            make \
+            rpm-build
+        shell: bash
+      - name: build test package
+        run: |
+          mkdir _build
+          cd _build
+          cmake \
+            -DBUILD_DOCUMENTATION:BOOL=ON \
+            -DBUILD_TESTING:BOOL=ON \
+            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DWARNINGS_AS_ERRORS:BOOL=ON \
+            --warn-uninitialized \
+            ..
+          cmake --build .
+          ctest .
+          cmake --install .
+          cpack -G RPM
+          cpack -G RPM --config CPackSourceConfig.cmake
+        shell: bash
+
   cmake_macos:
     name: cmake macos latest
     runs-on: macos-latest
@@ -171,6 +212,30 @@ jobs:
           cpack -C Release -G ZIP
           cpack -C Release -G ZIP --config CPackSourceConfig.cmake
         shell: powershell
+
+  gradle_centos:
+    name: gradle centos latest
+    runs-on: ubuntu-latest
+    container: centos:latest
+    steps:
+      - name: pre-checkout setup
+        run: |
+          dnf install -q -y \
+            ca-certificates \
+            glibc-langpack-en \
+            git
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: post-checkout setup
+        run: |
+          dnf install -q -y \
+            java-11-openjdk-devel \
+            which
+        shell: bash
+      - name: build package
+        run: ./gradlew build
+        shell: bash
 
   gradle_macos:
     name: gradle macos latest
