@@ -81,8 +81,8 @@ jobs:
           dnf install -q -y \
             cmake \
             java-11-openjdk-devel \
-            redhat-lsb-core \
             make \
+            redhat-lsb-core \
             rpm-build
         shell: bash
       - name: build test package
