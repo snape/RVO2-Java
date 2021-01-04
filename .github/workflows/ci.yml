@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - actions
   pull_request:
     branches:
       - master
@@ -233,6 +234,14 @@ jobs:
             java-11-openjdk-devel \
             which
         shell: bash
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: centos-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: centos-gradle-
       - name: build package
         run: ./gradlew build
         shell: bash
@@ -250,6 +259,14 @@ jobs:
           brew uninstall -q bazelisk
           brew bundle install --no-lock
         shell: zsh -efuo pipefail {0}
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: macos-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: macos-gradle-
       - name: build package
         run: ./gradlew build
         shell: zsh -efuo pipefail {0}
@@ -276,6 +293,14 @@ jobs:
           apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
             default-jdk
         shell: bash
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ubuntu-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ubuntu-gradle-
       - name: build package
         run: ./gradlew build
         shell: bash
@@ -286,6 +311,14 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~\.gradle/caches
+            ~\.gradle/wrapper
+          key: windows-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: windows-gradle-
       - name: build package
         run: gradlew.bat build
         shell: cmd
