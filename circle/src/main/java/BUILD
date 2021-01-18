@@ -39,7 +39,8 @@ licenses(["notice"])
 
 java_test(
     name = "circle",
-    size = "small",
+    size = "medium",
+    timeout = "short",
     srcs = ["edu/unc/cs/gamma/rvo/examples/Circle.java"],
     main_class = "edu.unc.cs.gamma.rvo.examples.Circle",
     use_testrunner = False,

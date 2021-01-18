@@ -39,7 +39,8 @@ licenses(["notice"])
 
 java_test(
     name = "blocks",
-    size = "small",
+    size = "medium",
+    timeout = "short",
     srcs = ["edu/unc/cs/gamma/rvo/examples/Blocks.java"],
     main_class = "edu.unc.cs.gamma.rvo.examples.Blocks",
     use_testrunner = False,

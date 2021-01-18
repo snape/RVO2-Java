@@ -51,4 +51,7 @@ if(BUILD_TESTING)
 
   add_test(NAME Circle
     COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${RVOJava_CIRCLE_JAR_FILE}")
+  set_tests_properties(Circle PROPERTIES
+    LABELS medium
+    TIMEOUT 60)
 endif()
