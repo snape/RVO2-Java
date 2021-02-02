@@ -11,6 +11,39 @@ on:
     - cron: '0 5 * * *'
 
 jobs:
+  bazel_arch:
+    name: bazel arch latest
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: pre-checkout setup
+        run: |
+          pacman --noconfirm -S -u -y
+          pacman --noconfirm -S \
+            ca-certificates \
+            git
+          rm -rf \
+            /var/cache/pacman/pkg/* \
+            /var/lib/pacman/sync/*
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: post-checkout setup
+        run: |
+          pacman --noconfirm -S -y \
+            bazel \
+            gcc \
+            jdk-openjdk \
+            python \
+            which
+          rm -rf \
+            /var/cache/pacman/pkg/* \
+            /var/lib/pacman/sync/*
+        shell: bash
+      - name: build test package
+        run: bazel test ...
+        shell: bash
+
   bazel_macos:
     name: bazel macos latest
     runs-on: macos-latest
@@ -40,6 +73,7 @@ jobs:
           apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
             ca-certificates \
             git
+          rm -rf /var/lib/apt/lists/*
         shell: bash
       - name: checkout
         uses: actions/checkout@v2
@@ -57,9 +91,95 @@ jobs:
             > /etc/apt/sources.list.d/bazel.list
           apt-get update -qq
           apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends bazel
+          rm -rf /var/lib/apt/lists/*
         shell: bash
       - name: build test package
         run: bazel test ...
+        shell: bash
+
+  cmake_alpine:
+    name: cmake alpine latest
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: pre-checkout setup
+        run: |
+          apk add --no-cache \
+            ca-certificates \
+            git
+        shell: sh
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: post-checkout setup
+        run: |
+          apk add --no-cache \
+            cmake \
+            make \
+            openjdk11
+        shell: sh
+      - name: build test package
+        run: |
+          mkdir _build
+          cd _build
+          cmake \
+            -DBUILD_DOCUMENTATION:BOOL=ON \
+            -DBUILD_TESTING:BOOL=ON \
+            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DWARNINGS_AS_ERRORS:BOOL=ON \
+            --warn-uninitialized \
+            ..
+          cmake --build .
+          ctest .
+          cmake --install .
+          cpack -G TGZ
+          cpack -G TGZ --config CPackSourceConfig.cmake
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-11-openjdk
+        shell: sh
+
+  cmake_arch:
+    name: cmake arch latest
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: pre-checkout setup
+        run: |
+          pacman --noconfirm -S -u -y
+          pacman --noconfirm -S \
+            ca-certificates \
+            git
+          rm -rf \
+            /var/cache/pacman/pkg/* \
+            /var/lib/pacman/sync/*
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: post-checkout setup
+        run: |
+          pacman --noconfirm -S -y \
+            cmake \
+            jdk-openjdk \
+            make
+          rm -rf \
+            /var/cache/pacman/pkg/* \
+            /var/lib/pacman/sync/*
+        shell: bash
+      - name: build test package
+        run: |
+          mkdir _build
+          cd _build
+          cmake \
+            -DBUILD_DOCUMENTATION:BOOL=ON \
+            -DBUILD_TESTING:BOOL=ON \
+            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DWARNINGS_AS_ERRORS:BOOL=ON \
+            --warn-uninitialized \
+            ..
+          cmake --build .
+          ctest .
+          cmake --install .
+          cpack -G TGZ
+          cpack -G TGZ --config CPackSourceConfig.cmake
         shell: bash
 
   cmake_centos:
@@ -146,6 +266,7 @@ jobs:
           apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
             ca-certificates \
             git
+          rm -rf /var/lib/apt/lists/*
         shell: bash
       - name: checkout
         uses: actions/checkout@v2
@@ -165,6 +286,7 @@ jobs:
             > /etc/apt/sources.list.d/kitware.list
           apt-get update -qq
           apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends cmake
+          rm -rf /var/lib/apt/lists/*
         shell: bash
       - name: build test package
         run: |
@@ -212,6 +334,76 @@ jobs:
           cpack -C Release -G ZIP
           cpack -C Release -G ZIP --config CPackSourceConfig.cmake
         shell: powershell
+
+  gradle_alpine:
+    name: gradle alpine latest
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: pre-checkout setup
+        run: |
+          apk add --no-cache \
+            ca-certificates \
+            git
+        shell: sh
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: post-checkout setup
+        run: |
+          apk add --no-cache \
+            openjdk11
+        shell: sh
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: alpine-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: alpine-gradle-
+      - name: build package
+        run: ./gradlew build
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-11-openjdk
+        shell: sh
+
+  gradle_arch:
+    name: gradle arch latest
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: pre-checkout setup
+        run: |
+          pacman --noconfirm -S -u -y
+          pacman --noconfirm -S \
+            ca-certificates \
+            git
+          rm -rf \
+            /var/cache/pacman/pkg/* \
+            /var/lib/pacman/sync/*
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: post-checkout setup
+        run: |
+          pacman --noconfirm -S -y \
+            jdk-openjdk \
+            which
+          rm -rf \
+            /var/cache/pacman/pkg/* \
+            /var/lib/pacman/sync/*
+        shell: bash
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: arch-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: arch-gradle-
+      - name: build package
+        run: ./gradlew build
+        shell: bash
 
   gradle_centos:
     name: gradle centos latest
@@ -282,6 +474,7 @@ jobs:
           apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
             ca-certificates \
             git
+          rm -rf /var/lib/apt/lists/*
         shell: bash
       - name: checkout
         uses: actions/checkout@v2
@@ -291,6 +484,7 @@ jobs:
           apt-get update -qq
           apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
             default-jdk
+          rm -rf /var/lib/apt/lists/*
         shell: bash
       - name: cache
         uses: actions/cache@v2
