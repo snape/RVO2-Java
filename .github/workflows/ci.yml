@@ -1,6 +1,7 @@
 ---
 name: ci
-on:
+
+on:  # yamllint disable-line rule:truthy
   push:
     branches:
       - main
@@ -13,26 +14,16 @@ on:
 jobs:
   bazel_arch:
     name: bazel arch latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: archlinux:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
-          pacman --noconfirm -S -u -y
-          pacman --noconfirm -S \
-            ca-certificates \
-            git
-          rm -rf \
-            /var/cache/pacman/pkg/* \
-            /var/lib/pacman/sync/*
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          pacman --noconfirm -S -y \
+          pacman --needed --noconfirm --noprogressbar -S -u -y \
             bazel \
+            ca-certificates \
             gcc \
+            git \
             jdk-openjdk \
             python \
             which
@@ -40,6 +31,8 @@ jobs:
             /var/cache/pacman/pkg/* \
             /var/lib/pacman/sync/*
         shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
       - name: build test package
         run: bazel test ...
         shell: bash
@@ -63,60 +56,50 @@ jobs:
 
   bazel_ubuntu:
     name: bazel ubuntu latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: ubuntu:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update -qq
-          apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
+          apt-get -qq update
+          apt-get -qq -o Dpkg::Use-Pty=0 --no-install-recommends install \
             ca-certificates \
-            git
-          rm -rf /var/lib/apt/lists/*
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update -qq
-          apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
+            git \
             default-jdk \
             gnupg \
             python-is-python3
-          export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
           apt-key adv -q --fetch-keys https://bazel.build/bazel-release.pub.gpg
           echo 'deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8' \
             > /etc/apt/sources.list.d/bazel.list
-          apt-get update -qq
-          apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends bazel
+          apt-get -qq update
+          apt-get -qq -o Dpkg::Use-Pty=0 --no-install-recommends install bazel
           rm -rf /var/lib/apt/lists/*
+        env:
+          APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE: 1
+          DEBIAN_FRONTEND: noninteractive
         shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
       - name: build test package
         run: bazel test ...
         shell: bash
 
   cmake_alpine:
     name: cmake alpine latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: alpine:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
           apk add --no-cache \
             ca-certificates \
-            git
-        shell: sh
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          apk add --no-cache \
             cmake \
+            git \
             make \
             openjdk11
         shell: sh
+      - name: checkout
+        uses: actions/checkout@v2
       - name: build test package
         run: |
           mkdir _build
@@ -136,34 +119,25 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk
         shell: sh
-
   cmake_arch:
     name: cmake arch latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: archlinux:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
-          pacman --noconfirm -S -u -y
-          pacman --noconfirm -S \
+          pacman --needed --noconfirm --noprogressbar -S -u -y \
             ca-certificates \
-            git
-          rm -rf \
-            /var/cache/pacman/pkg/* \
-            /var/lib/pacman/sync/*
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          pacman --noconfirm -S -y \
             cmake \
+            git \
             jdk-openjdk \
             make
           rm -rf \
             /var/cache/pacman/pkg/* \
             /var/lib/pacman/sync/*
         shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
       - name: build test package
         run: |
           mkdir _build
@@ -184,27 +158,23 @@ jobs:
 
   cmake_centos:
     name: cmake centos latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: centos:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
           dnf install -q -y \
             ca-certificates \
-            glibc-langpack-en \
-            git
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          dnf install -q -y \
             cmake \
+            git \
+            glibc-langpack-en \
             java-11-openjdk-devel \
             make \
             redhat-lsb-core \
             rpm-build
         shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
       - name: build test package
         run: |
           mkdir _build
@@ -256,38 +226,24 @@ jobs:
 
   cmake_ubuntu:
     name: cmake ubuntu latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: ubuntu:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update -qq
-          apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
+          apt-get -qq update
+          apt-get -qq -o Dpkg::Use-Pty=0 --no-install-recommends install \
             ca-certificates \
-            git
+            cmake \
+            default-jdk \
+            git \
+            make
           rm -rf /var/lib/apt/lists/*
+        env:
+          DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
         uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update -qq
-          apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
-            default-jdk \
-            gnupg \
-            lsb-release \
-            make
-          export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
-          apt-key adv -q --fetch-keys \
-            https://apt.kitware.com/keys/kitware-archive-latest.asc
-          echo "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" \
-            > /etc/apt/sources.list.d/kitware.list
-          apt-get update -qq
-          apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends cmake
-          rm -rf /var/lib/apt/lists/*
-        shell: bash
       - name: build test package
         run: |
           mkdir _build
@@ -316,7 +272,7 @@ jobs:
         run: |
           cup cmake.install -r -y --install-arguments=ADD_CMAKE_TO_PATH=System `
             --no-progress
-        shell: powershell
+        shell: pwsh
       - name: build test package
         run: |
           mkdir _build
@@ -333,26 +289,22 @@ jobs:
           cmake --install . --config Release
           cpack -C Release -G ZIP
           cpack -C Release -G ZIP --config CPackSourceConfig.cmake
-        shell: powershell
+        shell: pwsh
 
   gradle_alpine:
     name: gradle alpine latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: alpine:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
           apk add --no-cache \
             ca-certificates \
-            git
+            git \
+            openjdk11
         shell: sh
       - name: checkout
         uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          apk add --no-cache \
-            openjdk11
-        shell: sh
       - name: cache
         uses: actions/cache@v2
         with:
@@ -369,30 +321,22 @@ jobs:
 
   gradle_arch:
     name: gradle arch latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: archlinux:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
-          pacman --noconfirm -S -u -y
-          pacman --noconfirm -S \
+          pacman --needed --noconfirm --noprogressbar -S -u -y \
             ca-certificates \
-            git
-          rm -rf \
-            /var/cache/pacman/pkg/* \
-            /var/lib/pacman/sync/*
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          pacman --noconfirm -S -y \
+            git \
             jdk-openjdk \
             which
           rm -rf \
             /var/cache/pacman/pkg/* \
             /var/lib/pacman/sync/*
         shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
       - name: cache
         uses: actions/cache@v2
         with:
@@ -407,24 +351,20 @@ jobs:
 
   gradle_centos:
     name: gradle centos latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: centos:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
           dnf install -q -y \
             ca-certificates \
+            git \
             glibc-langpack-en \
-            git
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          dnf install -q -y \
             java-11-openjdk-devel \
             which
         shell: bash
+      - name: checkout
+        uses: actions/checkout@v2
       - name: cache
         uses: actions/cache@v2
         with:
@@ -464,28 +404,22 @@ jobs:
 
   gradle_ubuntu:
     name: gradle ubuntu latest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: ubuntu:latest
     steps:
-      - name: pre-checkout setup
+      - name: setup
         run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update -qq
-          apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
+          apt-get -qq update
+          apt-get -qq -o Dpkg::Use-Pty=0 --no-install-recommends install \
             ca-certificates \
+            default-jdk \
             git
           rm -rf /var/lib/apt/lists/*
+        env:
+          DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
         uses: actions/checkout@v2
-      - name: post-checkout setup
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update -qq
-          apt-get install -o Dpkg::Use-Pty=0 -qq --no-install-recommends \
-            default-jdk
-          rm -rf /var/lib/apt/lists/*
-        shell: bash
       - name: cache
         uses: actions/cache@v2
         with:
