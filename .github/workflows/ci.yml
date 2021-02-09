@@ -12,30 +12,30 @@ on:  # yamllint disable-line rule:truthy
     - cron: '0 5 * * *'
 
 jobs:
-  bazel_arch:
-    name: bazel arch latest
-    runs-on: ubuntu-20.04
-    container: archlinux:latest
-    steps:
-      - name: setup
-        run: |
-          pacman --needed --noconfirm --noprogressbar -S -u -y \
-            bazel \
-            ca-certificates \
-            gcc \
-            git \
-            jdk-openjdk \
-            python \
-            which
-          rm -rf \
-            /var/cache/pacman/pkg/* \
-            /var/lib/pacman/sync/*
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: build test package
-        run: bazel test ...
-        shell: bash
+#  bazel_arch:
+#    name: bazel arch latest
+#    runs-on: ubuntu-20.04
+#    container: archlinux:latest
+#    steps:
+#      - name: setup
+#        run: |
+#          pacman --needed --noconfirm --noprogressbar -S -u -y \
+#            bazel \
+#            ca-certificates \
+#            gcc \
+#            git \
+#            jdk-openjdk \
+#            python \
+#            which
+#          rm -rf \
+#            /var/cache/pacman/pkg/* \
+#            /var/lib/pacman/sync/*
+#        shell: bash
+#      - name: checkout
+#        uses: actions/checkout@v2
+#      - name: build test package
+#        run: bazel test ...
+#        shell: bash
 
   bazel_macos:
     name: bazel macos latest
@@ -119,42 +119,42 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk
         shell: sh
-  cmake_arch:
-    name: cmake arch latest
-    runs-on: ubuntu-20.04
-    container: archlinux:latest
-    steps:
-      - name: setup
-        run: |
-          pacman --needed --noconfirm --noprogressbar -S -u -y \
-            ca-certificates \
-            cmake \
-            git \
-            jdk-openjdk \
-            make
-          rm -rf \
-            /var/cache/pacman/pkg/* \
-            /var/lib/pacman/sync/*
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: build test package
-        run: |
-          mkdir _build
-          cd _build
-          cmake \
-            -DBUILD_DOCUMENTATION:BOOL=ON \
-            -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
-            -DWARNINGS_AS_ERRORS:BOOL=ON \
-            --warn-uninitialized \
-            ..
-          cmake --build .
-          ctest .
-          cmake --install .
-          cpack -G TGZ
-          cpack -G TGZ --config CPackSourceConfig.cmake
-        shell: bash
+#  cmake_arch:
+#    name: cmake arch latest
+#    runs-on: ubuntu-20.04
+#    container: archlinux:latest
+#    steps:
+#      - name: setup
+#        run: |
+#          pacman --needed --noconfirm --noprogressbar -S -u -y \
+#            ca-certificates \
+#            cmake \
+#            git \
+#            jdk-openjdk \
+#            make
+#          rm -rf \
+#            /var/cache/pacman/pkg/* \
+#            /var/lib/pacman/sync/*
+#        shell: bash
+#      - name: checkout
+#        uses: actions/checkout@v2
+#      - name: build test package
+#        run: |
+#          mkdir _build
+#          cd _build
+#          cmake \
+#            -DBUILD_DOCUMENTATION:BOOL=ON \
+#            -DBUILD_TESTING:BOOL=ON \
+#            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+#            -DWARNINGS_AS_ERRORS:BOOL=ON \
+#            --warn-uninitialized \
+#            ..
+#          cmake --build .
+#          ctest .
+#          cmake --install .
+#          cpack -G TGZ
+#          cpack -G TGZ --config CPackSourceConfig.cmake
+#        shell: bash
 
   cmake_centos:
     name: cmake centos latest
@@ -319,35 +319,35 @@ jobs:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk
         shell: sh
 
-  gradle_arch:
-    name: gradle arch latest
-    runs-on: ubuntu-20.04
-    container: archlinux:latest
-    steps:
-      - name: setup
-        run: |
-          pacman --needed --noconfirm --noprogressbar -S -u -y \
-            ca-certificates \
-            git \
-            jdk-openjdk \
-            which
-          rm -rf \
-            /var/cache/pacman/pkg/* \
-            /var/lib/pacman/sync/*
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: arch-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: arch-gradle-
-      - name: build package
-        run: ./gradlew build
-        shell: bash
+#  gradle_arch:
+#    name: gradle arch latest
+#    runs-on: ubuntu-20.04
+#    container: archlinux:latest
+#    steps:
+#      - name: setup
+#        run: |
+#          pacman --needed --noconfirm --noprogressbar -S -u -y \
+#            ca-certificates \
+#            git \
+#            jdk-openjdk \
+#            which
+#          rm -rf \
+#            /var/cache/pacman/pkg/* \
+#            /var/lib/pacman/sync/*
+#        shell: bash
+#      - name: checkout
+#        uses: actions/checkout@v2
+#      - name: cache
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#          key: arch-gradle-${{ hashFiles('**/*.gradle*') }}
+#          restore-keys: arch-gradle-
+#      - name: build package
+#        run: ./gradlew build
+#        shell: bash
 
   gradle_centos:
     name: gradle centos latest
