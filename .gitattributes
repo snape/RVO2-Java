@@ -1,41 +1,38 @@
-[attr]whitespace-2  whitespace=tab-in-indent,tabwidth=2,trailing-space
-[attr]whitespace-4  whitespace=tab-in-indent,tabwidth=4,trailing-space
+# -*- mode: gitattributes; -*-
+# vi: set ft=gitattributes:
+
+[attr]whitespace-2     whitespace=tab-in-indent,tabwidth=2,trailing-space
+[attr]whitespace-4     whitespace=tab-in-indent,tabwidth=4,trailing-space
+[attr]whitespace-md    whitespace=-blank-at-eol,blank-at-eof,tab-in-indent
 
 *                      text=auto
 
-*.bat                  text eol=crlf whitespace=trailing-space
+*.bazel                text diff=python linguist-language=starlark whitespace-4
 *.cmake                text whitespace-2
 *.cmake.in             text whitespace-2
-*.gradle               text diff=java whitespace-4
+*.gradle               text diff=java linguist-language=gradle whitespace-4
 *.jar                  binary
 *.java                 text diff=java whitespace-4
 *.MANIFEST.MF.in       text whitespace-4
-*.md                   text diff=markdown whitespace=-blank-at-eol,blank-at-eof,tab-in-indent
+*.md                   text diff=markdown whitespace-md
 *.properties           text whitespace-4
 *.yml                  text whitespace-2
 
-.bazelignore           text whitespace-4
+.bazelignore           text linguist-language=ignore whitespace-4
 .bazelrc               text whitespace-4
 .editorconfig          text whitespace-2
-.gitattributes         text whitespace-2
-.gitignore             text whitespace-2
-Brewfile               text diff=ruby whitespace-4
-BUILD                  text diff=python whitespace-4
+.gitattributes         text export-ignore whitespace-2
+.gitignore             text export-ignore whitespace-2
+Brewfile               text diff=ruby export-ignore whitespace-4
 CMakeLists.txt         text whitespace-2
 CODEOWNERS             text whitespace-2
-gradlew                text eol=lf whitespace=trailing-space
-LICENSE                text whitespace=trailing-space
-NOTICE                 text whitespace=trailing-space
-WORKSPACE              text diff=python whitespace-4
-
-.gitattributes         export-ignore
-.gitignore             export-ignore
-Brewfile               export-ignore
+gradlew                text eol=lf linguist-vendored whitespace=trailing-space
+gradlew.bat            text eol=crlf linguist-vendored whitespace=trailing-space
+LICENSE                text linguist-documentation linguist-vendored whitespace=trailing-space
+NOTICE                 text linguist-documentation whitespace=trailing-space
+README.md              linguist-documentation
 
 .github/**             export-ignore
-
-gradlew                linguist-vendored
-gradlew.bat            linguist-vendored
-
+.github/**/*.md        linguist-documentation
 cmake/modules/3.18/**  linguist-vendored
 gradle/**              linguist-vendored

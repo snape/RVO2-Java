@@ -1,8 +1,8 @@
-# -*- mode: python -*-
-# vi: set ft=python :
+# -*- mode: bazel; -*-
+# vi: set ft=bazel:
 
 #
-# BUILD
+# circle/src/main/java/BUILD
 # RVO2 Library Java
 #
 # Copyright 2008 University of North Carolina at Chapel Hill
@@ -33,41 +33,20 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
-load("@rules_pkg//:pkg.bzl", "pkg_deb", "pkg_tar")
+load("@rules_java//java:defs.bzl", "java_test")
 
 licenses(["notice"])
 
-exports_files(
-    ["LICENSE"],
-    visibility = ["//visibility:public"],
-)
-
-pkg_tar(
-    name = "doc",
-    srcs = ["LICENSE"],
-    mode = "0644",
-    package_dir = "/usr/share/doc/rvo-java",
-    visibility = ["//visibility:private"],
-)
-
-pkg_tar(
-    name = "tar",
-    extension = "tar.gz",
+java_test(
+    name = "circle",
+    size = "medium",
+    timeout = "short",
+    srcs = ["edu/unc/cs/gamma/rvo/examples/Circle.java"],
+    main_class = "edu.unc.cs.gamma.rvo.examples.Circle",
+    use_testrunner = False,
     visibility = ["//visibility:public"],
     deps = [
-        ":doc",
-        "//rvo/src/main/java:jar",
+        "//rvo/src/main/java:rvo",
+        "@maven//:org_apache_commons_commons_math3",
     ],
-)
-
-pkg_deb(
-    name = "deb",
-    architecture = "all",
-    data = ":tar",
-    description = "Optimal Reciprocal Collision Avoidance for Java",
-    homepage = "https://gamma.cs.unc.edu/RVO2/",
-    maintainer = "Jamie Snape",
-    package = "rvo-java",
-    version = "2.0.0",
-    visibility = ["//visibility:public"],
 )
