@@ -2,7 +2,7 @@
 # vi: set ft=bazel:
 
 #
-# rvo/src/main/java/BUILD
+# rvo/src/main/java/BUILD.bazel
 # RVO2 Library Java
 #
 # Copyright 2008 University of North Carolina at Chapel Hill
