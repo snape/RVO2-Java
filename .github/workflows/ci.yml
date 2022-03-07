@@ -32,7 +32,7 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: build test package
         run: bazel test ...
         shell: bash
@@ -42,7 +42,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: setup
         run: |
           rm -f /usr/local/bin/2to3
@@ -79,7 +79,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: build test package
         run: bazel test ...
         shell: bash
@@ -99,7 +99,7 @@ jobs:
             openjdk11
         shell: sh
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: build test package
         run: |
           mkdir _build
@@ -138,7 +138,7 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: build test package
         run: |
           mkdir _build
@@ -175,7 +175,7 @@ jobs:
             rpm-build
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: build test package
         run: |
           mkdir _build
@@ -212,7 +212,7 @@ jobs:
             rpm-build
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: build test package
         run: |
           mkdir _build
@@ -236,7 +236,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: setup
         run: |
           rm -f /usr/local/bin/2to3
@@ -281,7 +281,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: build test package
         run: |
           mkdir _build
@@ -305,7 +305,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: setup
         run: |
           cup cmake.install -r -y --install-arguments=ADD_CMAKE_TO_PATH=System `
@@ -342,7 +342,7 @@ jobs:
             openjdk11
         shell: sh
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: cache
         uses: actions/cache@v2
         with:
@@ -374,7 +374,7 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: cache
         uses: actions/cache@v2
         with:
@@ -402,7 +402,7 @@ jobs:
             which
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: cache
         uses: actions/cache@v2
         with:
@@ -430,7 +430,7 @@ jobs:
             which
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: cache
         uses: actions/cache@v2
         with:
@@ -448,7 +448,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: setup
         run: |
           rm -f /usr/local/bin/2to3
@@ -485,7 +485,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: cache
         uses: actions/cache@v2
         with:
@@ -503,7 +503,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: cache
         uses: actions/cache@v2
         with:
