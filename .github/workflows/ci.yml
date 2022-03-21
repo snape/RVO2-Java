@@ -344,7 +344,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -376,7 +376,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -404,7 +404,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -432,7 +432,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -457,7 +457,7 @@ jobs:
           brew bundle install --no-lock
         shell: zsh -efuo pipefail {0}
       - name: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -487,7 +487,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -505,7 +505,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~\.gradle/caches
