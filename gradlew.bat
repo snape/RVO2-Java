@@ -1,5 +1,6 @@
 @rem
-@rem Copyright 2015 the original author or authors.
+@rem SPDX-FileCopyrightText: © 2015 the original authors.
+@rem SPDX-License-Identifier: Apache-2.0
 @rem
 @rem Licensed under the Apache License, Version 2.0 (the "License");
 @rem you may not use this file except in compliance with the License.
