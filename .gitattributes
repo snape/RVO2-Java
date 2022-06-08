@@ -54,7 +54,7 @@
 *.txt                  text
 *.yml                  text whitespace-2
 
-.bazelignore           text linguist-language=ignore whitespace-4
+.bazelignore           text whitespace-4
 .bazelrc               text whitespace-4
 .editorconfig          text whitespace-2
 .gitattributes         text export-ignore whitespace-2
@@ -68,6 +68,7 @@ gradlew.bat            text eol=crlf linguist-vendored whitespace=trailing-space
 LICENSE                text linguist-documentation linguist-vendored whitespace-0
 NOTICE                 text linguist-documentation whitespace=trailing-space
 README.md              linguist-documentation
+requirements.txt       whitespace-2
 
 .github/**             export-ignore
 .github/**/*.md        linguist-documentation
