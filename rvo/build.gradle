@@ -43,7 +43,6 @@ description = 'Optimal Reciprocal Collision Avoidance for Java'
 version = '2.0.0'
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
