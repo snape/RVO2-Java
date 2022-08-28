@@ -34,8 +34,13 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
-brew 'bazel'
+brew 'bazel', conflicts_with: ['bazelisk']
 brew 'buildifier'
 brew 'cmake'
+brew 'jsonlint'
+brew 'markdownlint-cli'
+brew 'ninja'
+brew 'python'
+brew 'yamllint'
 
 cask 'temurin' unless system '/usr/libexec/java_home --version 1.8+ --failfast &> /dev/null'
