@@ -60,6 +60,8 @@ Optimal Reciprocal Collision Avoidance for Java
 
 <https://gamma.cs.unc.edu/RVO2/>
 
+[![DOI](https://zenodo.org/badge/51186367.svg)](https://zenodo.org/badge/latestdoi/51186367)
+
 We present a formal approach to reciprocal collision avoidance, where multiple
 independent mobile robots or agents need to avoid collisions with each other
 without communication among agents while moving in a common workspace. Our
@@ -81,7 +83,7 @@ simulation is fully accessible and manipulable during runtime.
 ![Build Status](https://github.com/snape/RVO2-Java/workflows/ci/badge.svg?branch=main)
 
 <!-- REUSE-IgnoreStart -->
-SPDX-FileCopyrightText: 2008 University of North Carolina at Chapel Hill
+SPDX-FileCopyrightText: 2008 University of North Carolina at Chapel Hill  
 SPDX-License-Identifier: Apache-2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");
