@@ -54,9 +54,6 @@ indent_size = 4
 [*.gradle]
 indent_size = 4
 
-[*.java]
-indent_size = 4
-
 [*.MANIFEST.MF.in]
 indent_size = 4
 

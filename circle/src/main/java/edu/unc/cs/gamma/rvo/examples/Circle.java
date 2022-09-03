@@ -34,89 +34,90 @@
 package edu.unc.cs.gamma.rvo.examples;
 
 import edu.unc.cs.gamma.rvo.Simulator;
-
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.util.FastMath;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.util.FastMath;
 
 // Example showing a demo with 250 agents initially positioned evenly
 // distributed on a circle attempting to move to the antipodal position on the
 // circle.
 class Circle {
-    // Store the goals of the agents.
-    private final List<Vector2D> goals = new ArrayList<>();
+  // Store the goals of the agents.
+  private final List<Vector2D> goals = new ArrayList<>();
 
-    private void setupScenario() {
-        // Specify the global time step of the simulation.
-        Simulator.instance.setTimeStep(0.25);
+  private void setupScenario() {
+    // Specify the global time step of the simulation.
+    Simulator.instance.setTimeStep(0.25);
 
-        // Specify the default parameters for agents that are subsequently
-        // added.
-        Simulator.instance.setAgentDefaults(15.0, 10, 10.0, 10.0, 1.5, 2.0, Vector2D.ZERO);
+    // Specify the default parameters for agents that are subsequently
+    // added.
+    Simulator.instance.setAgentDefaults(15.0, 10, 10.0, 10.0, 1.5, 2.0, Vector2D.ZERO);
 
-        // Add agents, specifying their start position, and store their goals on
-        // the opposite side of the environment.
-        double angle = 0.008 * FastMath.PI;
+    // Add agents, specifying their start position, and store their goals on
+    // the opposite side of the environment.
+    double angle = 0.008 * FastMath.PI;
 
-        for (int i = 0; i < 250; i++) {
-            Simulator.instance.addAgent(new Vector2D(FastMath.cos(i * angle), FastMath.sin(i * angle)).scalarMultiply(200.0));
-            goals.add(Simulator.instance.getAgentPosition(i).negate());
-        }
+    for (int i = 0; i < 250; i++) {
+      Simulator.instance.addAgent(
+          new Vector2D(FastMath.cos(i * angle), FastMath.sin(i * angle)).scalarMultiply(200.0));
+      goals.add(Simulator.instance.getAgentPosition(i).negate());
+    }
+  }
+
+  @SuppressWarnings("SystemOut")
+  private static void updateVisualization() {
+    // Output the current global time.
+    System.out.print(Simulator.instance.getGlobalTime());
+
+    // Output the current position of all the agents.
+    for (int agentNo = 0; agentNo < Simulator.instance.getNumAgents(); agentNo++) {
+      System.out.print(" " + Simulator.instance.getAgentPosition(agentNo));
     }
 
-    @SuppressWarnings("SystemOut")
-    private static void updateVisualization() {
-        // Output the current global time.
-        System.out.print(Simulator.instance.getGlobalTime());
+    System.out.println();
+  }
 
-        // Output the current position of all the agents.
-        for (int agentNo = 0; agentNo < Simulator.instance.getNumAgents(); agentNo++) {
-            System.out.print(" " + Simulator.instance.getAgentPosition(agentNo));
-        }
+  private void setPreferredVelocities() {
+    // Set the preferred velocity to be a vector of unit magnitude (speed)
+    // in the direction of the goal.
+    for (int agentNo = 0; agentNo < Simulator.instance.getNumAgents(); agentNo++) {
+      Vector2D goalVector =
+          goals.get(agentNo).subtract(Simulator.instance.getAgentPosition(agentNo));
+      final double lengthSq = goalVector.getNormSq();
 
-        System.out.println();
+      if (lengthSq > 1.0) {
+        goalVector = goalVector.scalarMultiply(1.0 / FastMath.sqrt(lengthSq));
+      }
+
+      Simulator.instance.setAgentPreferredVelocity(agentNo, goalVector);
+    }
+  }
+
+  private boolean reachedGoal() {
+    // Check if all agents have reached their goals.
+    for (int agentNo = 0; agentNo < Simulator.instance.getNumAgents(); agentNo++) {
+      if (Simulator.instance.getAgentPosition(agentNo).distanceSq(goals.get(agentNo))
+          > Simulator.instance.getAgentRadius(agentNo)
+              * Simulator.instance.getAgentRadius(agentNo)) {
+        return false;
+      }
     }
 
-    private void setPreferredVelocities() {
-        // Set the preferred velocity to be a vector of unit magnitude (speed)
-        // in the direction of the goal.
-        for (int agentNo = 0; agentNo < Simulator.instance.getNumAgents(); agentNo++) {
-            Vector2D goalVector = goals.get(agentNo).subtract(Simulator.instance.getAgentPosition(agentNo));
-            final double lengthSq = goalVector.getNormSq();
+    return true;
+  }
 
-            if (lengthSq > 1.0) {
-                goalVector = goalVector.scalarMultiply(1.0 / FastMath.sqrt(lengthSq));
-            }
+  public static void main(String[] args) {
+    final Circle circle = new Circle();
 
-            Simulator.instance.setAgentPreferredVelocity(agentNo, goalVector);
-        }
-    }
+    // Set up the scenario.
+    circle.setupScenario();
 
-    private boolean reachedGoal() {
-        // Check if all agents have reached their goals.
-        for (int agentNo = 0; agentNo < Simulator.instance.getNumAgents(); agentNo++) {
-            if (Simulator.instance.getAgentPosition(agentNo).distanceSq(goals.get(agentNo)) > Simulator.instance.getAgentRadius(agentNo) * Simulator.instance.getAgentRadius(agentNo)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static void main(String[] args) {
-        Circle circle = new Circle();
-
-        // Set up the scenario.
-        circle.setupScenario();
-
-        // Perform (and manipulate) the simulation.
-        do {
-            Circle.updateVisualization();
-            circle.setPreferredVelocities();
-            Simulator.instance.doStep();
-        }
-        while (!circle.reachedGoal());
-    }
+    // Perform (and manipulate) the simulation.
+    do {
+      Circle.updateVisualization();
+      circle.setPreferredVelocities();
+      Simulator.instance.doStep();
+    } while (!circle.reachedGoal());
+  }
 }

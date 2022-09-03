@@ -32,8 +32,8 @@
  */
 
 /**
- * RVO2 Library is an implementation of the Optimal Reciprocal Collision
- * Avoidance (ORCA) formulation for multi-agent simulation.
+ * RVO2 Library is an implementation of the Optimal Reciprocal Collision Avoidance (ORCA)
+ * formulation for multi-agent simulation.
  *
  * @author Jur van den Berg
  * @author Stephen J. Guy

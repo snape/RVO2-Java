@@ -37,6 +37,7 @@
 brew 'bazel', conflicts_with: ['bazelisk']
 brew 'buildifier'
 brew 'cmake'
+brew 'google-java-format'
 brew 'jsonlint'
 brew 'markdownlint-cli'
 brew 'ninja'
