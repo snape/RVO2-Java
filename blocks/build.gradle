@@ -50,3 +50,7 @@ dependencies {
 application {
     mainClass = 'edu.unc.cs.gamma.rvo.examples.Blocks'
 }
+
+compileJava {
+    options.release = 11
+}

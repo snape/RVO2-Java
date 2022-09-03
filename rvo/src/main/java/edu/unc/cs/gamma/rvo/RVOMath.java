@@ -38,7 +38,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 /**
  * Contains functions and constants used in multiple classes.
  */
-class RVOMath {
+final class RVOMath {
     /**
      * A sufficiently small positive number.
      */
@@ -68,5 +68,11 @@ class RVOMath {
      */
     static double leftOf(Vector2D point1, Vector2D point2, Vector2D point3) {
         return det(point1.subtract(point3), point2.subtract(point1));
+    }
+
+   /**
+     * Constructs and initializes an instance.
+     */
+    private RVOMath() {
     }
 }

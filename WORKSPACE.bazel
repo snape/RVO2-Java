@@ -40,45 +40,17 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "bazel_skylib",
-    sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
+    sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
-        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
-    ],
-)
-
-http_archive(
-    name = "rules_python",
-    sha256 = "b6d46438523a3ec0f3cead544190ee13223a52f6a6765a29eae7b7cc24cc83a0",
-    urls = [
-        "https://github.com/bazelbuild/rules_python/releases/download/0.1.0/rules_python-0.1.0.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
+        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
     ],
 )
 
 http_archive(
     name = "rules_java",
-    sha256 = "220b87d8cfabd22d1c6d8e3cdb4249abd4c93dcc152e0667db061fb1b957ee68",
-    urls = [
-        "https://github.com/bazelbuild/rules_java/releases/download/0.1.1/rules_java-0.1.1.tar.gz",
-    ],
-)
-
-http_archive(
-    name = "rules_jvm_external",
-    sha256 = "2a547d8d5e99703de8de54b6188ff0ed470b3bfc88e346972d1c8865e2688391",
-    strip_prefix = "rules_jvm_external-3.3",
-    urls = [
-        "https://github.com/bazelbuild/rules_jvm_external/archive/3.3.tar.gz",
-    ],
-)
-
-http_archive(
-    name = "rules_pkg",
-    sha256 = "6b5969a7acd7b60c02f816773b06fcf32fbe8ba0c7919ccdc2df4f8fb923804a",
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.3.0/rules_pkg-0.3.0.tar.gz",
-        "https://github.com/bazelbuild/rules_pkg/releases/download/0.3.0/rules_pkg-0.3.0.tar.gz",
-    ],
+    sha256 = "d974a2d6e1a534856d1b60ad6a15e57f3970d8596fbb0bb17b9ee26ca209332a",
+    url = "https://github.com/bazelbuild/rules_java/releases/download/5.1.0/rules_java-5.1.0.tar.gz",
 )
 
 load(
@@ -91,16 +63,69 @@ rules_java_dependencies()
 
 rules_java_toolchains()
 
+http_archive(
+    name = "rules_python",
+    sha256 = "c03246c11efd49266e8e41e12931090b613e12a59e6f55ba2efd29a7cb8b4258",
+    strip_prefix = "rules_python-0.11.0",
+    url = "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.11.0.tar.gz",
+)
+
+http_archive(
+    name = "rules_jvm_external",
+    sha256 = "23fe83890a77ac1a3ee143e2306ec12da4a845285b14ea13cb0df1b1e23658fe",
+    strip_prefix = "rules_jvm_external-4.3",
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/refs/tags/4.3.tar.gz",
+)
+
+load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+
+rules_jvm_external_deps()
+
+load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+
+rules_jvm_external_setup()
+
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = ["org.apache.commons:commons-math3:3.6.1"],
-    repositories = [
-        "https://jcenter.bintray.com/",
-        "https://repo.maven.apache.org/maven2/",
+    maven_install_json = "//:maven_install.json",
+    repositories = ["https://repo.maven.apache.org/maven2/"],
+)
+
+load("@maven//:defs.bzl", "pinned_maven_install")
+
+pinned_maven_install()
+
+http_archive(
+    name = "google_bazel_common",
+    sha256 = "6011633bda9cf29c32a61b5c48768b963808e481199d8738c023d98c4ebae2ee",
+    strip_prefix = "bazel-common-227a23a508a2fab0fa67ffe2d9332ae536a40edc",
+    url = "https://github.com/google/bazel-common/archive/227a23a508a2fab0fa67ffe2d9332ae536a40edc.tar.gz",
+)
+
+load("@google_bazel_common//:workspace_defs.bzl", "google_common_workspace_rules")
+
+google_common_workspace_rules()
+
+http_archive(
+    name = "rules_license",
+    sha256 = "00ccc0df21312c127ac4b12880ab0f9a26c1cff99442dc6c5a331750360de3c3",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_license/releases/download/0.0.3/rules_license-0.0.3.tar.gz",
+        "https://github.com/bazelbuild/rules_license/releases/download/0.0.3/rules_license-0.0.3.tar.gz",
     ],
 )
 
-load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+http_archive(
+    name = "rules_pkg",
+    sha256 = "8a298e832762eda1830597d64fe7db58178aa84cd5926d76d5b744d6558941c2",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
+        "https://github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
+    ],
+)
+
+load("@rules_pkg//pkg:deps.bzl", "rules_pkg_dependencies")
 
 rules_pkg_dependencies()

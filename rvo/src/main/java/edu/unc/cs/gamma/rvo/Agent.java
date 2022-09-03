@@ -226,7 +226,7 @@ class Agent {
             final double tLeft = velocity.subtract(leftCutOff).dotProduct(leftLegDirection);
             final double tRight = velocity.subtract(rightCutOff).dotProduct(rightLegDirection);
 
-            if (t < 0.0 && tLeft < 0.0 || obstacle1 == obstacle2 && tLeft < 0.0 && tRight < 0.0) {
+            if ((t < 0.0 && tLeft < 0.0) || (obstacle1 == obstacle2 && tLeft < 0.0 && tRight < 0.0)) {
                 // Project on left cut-off circle.
                 final Vector2D unitW = velocity.subtract(leftCutOff).normalize();
 

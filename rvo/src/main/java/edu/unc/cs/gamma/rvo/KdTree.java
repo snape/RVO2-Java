@@ -256,7 +256,7 @@ class KdTree {
                 final Pair<Integer, Integer> pair1 = new Pair<>(FastMath.max(leftSize, rightSize), FastMath.min(leftSize, rightSize));
                 final Pair<Integer, Integer> pair2 = new Pair<>(FastMath.max(minLeft, minRight), FastMath.min(minLeft, minRight));
 
-                if (!(pair1.getFirst() < pair2.getFirst() || pair1.getFirst() <= pair2.getFirst() && pair1.getSecond() < pair2.getSecond())) {
+                if (!((pair1.getFirst() < pair2.getFirst()) || (pair1.getFirst() <= pair2.getFirst() && pair1.getSecond() < pair2.getSecond()))) {
                     break;
                 }
             }
@@ -264,7 +264,7 @@ class KdTree {
             final Pair<Integer, Integer> pair1 = new Pair<>(FastMath.max(leftSize, rightSize), FastMath.min(leftSize, rightSize));
             final Pair<Integer, Integer> pair2 = new Pair<>(FastMath.max(minLeft, minRight), FastMath.min(minLeft, minRight));
 
-            if (pair1.getFirst() < pair2.getFirst() || pair1.getFirst() <= pair2.getFirst() && pair1.getSecond() < pair2.getSecond()) {
+            if (pair1.getFirst() < pair2.getFirst() || (pair1.getFirst() <= pair2.getFirst() && pair1.getSecond() < pair2.getSecond())) {
                 minLeft = leftSize;
                 minRight = rightSize;
                 optimalSplit = i;
@@ -445,11 +445,11 @@ class KdTree {
         final double invLengthI = 1.0 / obstacle2.point.distanceSq(obstacle1.point);
 
         if (q1LeftOfI >= 0.0 && q2LeftOfI >= 0.0) {
-            return queryVisibilityRecursive(q1, q2, radius, node.left) && (q1LeftOfI * q1LeftOfI * invLengthI >= radius * radius && q2LeftOfI * q2LeftOfI * invLengthI >= radius * radius || queryVisibilityRecursive(q1, q2, radius, node.right));
+            return queryVisibilityRecursive(q1, q2, radius, node.left) && ((q1LeftOfI * q1LeftOfI * invLengthI >= radius * radius && q2LeftOfI * q2LeftOfI * invLengthI >= radius * radius) || queryVisibilityRecursive(q1, q2, radius, node.right));
         }
 
         if (q1LeftOfI <= 0.0 && q2LeftOfI <= 0.0) {
-            return queryVisibilityRecursive(q1, q2, radius, node.right) && (q1LeftOfI * q1LeftOfI * invLengthI >= radius * radius && q2LeftOfI * q2LeftOfI * invLengthI >= radius * radius || queryVisibilityRecursive(q1, q2, radius, node.left));
+            return queryVisibilityRecursive(q1, q2, radius, node.right) && ((q1LeftOfI * q1LeftOfI * invLengthI >= radius * radius && q2LeftOfI * q2LeftOfI * invLengthI >= radius * radius) || queryVisibilityRecursive(q1, q2, radius, node.left));
         }
 
         if (q1LeftOfI >= 0.0 && q2LeftOfI <= 0.0) {

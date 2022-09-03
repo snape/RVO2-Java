@@ -51,16 +51,21 @@ dependencies {
 }
 
 jar {
-    manifest {
-        attributes(
-            'Specification-Title': project.description,
-            'Specification-Version': project.version,
-            'Specification-Vendor': 'University of North Carolina at Chapel Hill',
-            'Implementation-Title': project.name,
-            'Implementation-Version': project.version,
-            'Implementation-Vendor': 'University of North Carolina at Chapel Hill')
+    manifest.attributes(
+        'Specification-Title': project.description,
+        'Specification-Version': project.version,
+        'Specification-Vendor': 'University of North Carolina at Chapel Hill',
+        'Implementation-Title': project.name,
+        'Implementation-Version': project.version,
+        'Implementation-Vendor': 'University of North Carolina at Chapel Hill')
+}
 
-    }
+compileJava {
+    options.release = 11
+}
+
+javadoc {
+    options.linksOffline('https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/', 'https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/')
 }
 
 java {

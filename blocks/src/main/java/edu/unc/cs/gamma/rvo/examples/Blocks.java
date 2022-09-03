@@ -114,7 +114,8 @@ class Blocks {
         Simulator.instance.processObstacles();
     }
 
-    private void updateVisualization() {
+    @SuppressWarnings("SystemOut")
+    private static void updateVisualization() {
         // Output the current global time.
         System.out.print(Simulator.instance.getGlobalTime());
 
@@ -166,7 +167,7 @@ class Blocks {
 
         // Perform (and manipulate) the simulation.
         do {
-            blocks.updateVisualization();
+            Blocks.updateVisualization();
             blocks.setPreferredVelocities();
             Simulator.instance.doStep();
         }

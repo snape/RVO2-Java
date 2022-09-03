@@ -61,7 +61,7 @@ endif()
 
 include(CTest)
 
-find_package(Java 1.8 REQUIRED COMPONENTS Development)
+find_package(Java 11 REQUIRED COMPONENTS Development)
 include(UseJava)
 
 option(WARNINGS_AS_ERRORS "Turn compiler warnings into errors" OFF)

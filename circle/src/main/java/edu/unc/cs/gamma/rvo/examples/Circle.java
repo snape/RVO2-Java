@@ -58,7 +58,7 @@ class Circle {
 
         // Add agents, specifying their start position, and store their goals on
         // the opposite side of the environment.
-        final double angle = 0.008 * FastMath.PI;
+        double angle = 0.008 * FastMath.PI;
 
         for (int i = 0; i < 250; i++) {
             Simulator.instance.addAgent(new Vector2D(FastMath.cos(i * angle), FastMath.sin(i * angle)).scalarMultiply(200.0));
@@ -66,7 +66,8 @@ class Circle {
         }
     }
 
-    private void updateVisualization() {
+    @SuppressWarnings("SystemOut")
+    private static void updateVisualization() {
         // Output the current global time.
         System.out.print(Simulator.instance.getGlobalTime());
 
@@ -105,14 +106,14 @@ class Circle {
     }
 
     public static void main(String[] args) {
-        final Circle circle = new Circle();
+        Circle circle = new Circle();
 
         // Set up the scenario.
         circle.setupScenario();
 
         // Perform (and manipulate) the simulation.
         do {
-            circle.updateVisualization();
+            Circle.updateVisualization();
             circle.setPreferredVelocities();
             Simulator.instance.doStep();
         }

@@ -190,12 +190,13 @@ public class Simulator {
     public double doStep() {
         kdTree.buildAgentTree();
 
-        for (final Agent agent : agents) {
+
+        agents.parallelStream().forEach(agent -> {
             agent.computeNeighbors();
             agent.computeNewVelocity();
-        }
+        });
 
-        agents.forEach(Agent::update);
+        agents.parallelStream().forEach(agent -> agent.update());
 
         globalTime += timeStep;
 
