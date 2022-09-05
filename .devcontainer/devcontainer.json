@@ -1,0 +1,29 @@
+{
+  "name": "RVO2-Java",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bazelbuild.vscode-bazel",
+        "editorconfig.editorconfig",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.vscode-markdown-notebook",
+        "ms-vscode-remote.remote-containers",
+        "redhat.java",
+        "redhat.vscode-yaml",
+        "vscjava.vscode-gradle",
+        "vscjava.vscode-java-debug"
+      ],
+      "settings": {
+        "cmake.buildDirectory": "${workspaceFolder}/_build",
+        "cmake.preferredGenerators": [
+          "Ninja Multi-Config",
+          "Ninja"
+        ]
+      }
+    }
+  },
+  "dockerComposeFile": "../compose.yaml",
+  "overrideCommand": true,
+  "service": "dev",
+  "workspaceFolder": "/workspace"
+}
