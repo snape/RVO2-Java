@@ -35,6 +35,7 @@
 #
 
 [attr]whitespace-0     whitespace=tab-in-indent,trailing-space
+[attr]whitespace-1     whitespace=tab-in-indent,tabwidth=1,trailing-space
 [attr]whitespace-2     whitespace=tab-in-indent,tabwidth=2,trailing-space
 [attr]whitespace-4     whitespace=tab-in-indent,tabwidth=4,trailing-space
 [attr]whitespace-md    whitespace=-blank-at-eol,blank-at-eof,tab-in-indent
@@ -47,7 +48,7 @@
 *.cmake.in             text whitespace-2
 *.gradle               text diff=java linguist-language=gradle whitespace-4
 *.jar                  binary
-*.java                 text diff=java whitespace-4
+*.java                 text diff=java whitespace-2
 *.json                 text whitespace-2
 *.license              text linguist-documentation whitespace-0
 *.MANIFEST.MF.in       text whitespace-4
@@ -67,12 +68,11 @@
 Brewfile               text diff=ruby export-ignore whitespace-4
 CMakeLists.txt         whitespace-2
 CODEOWNERS             text whitespace-2
-dep5                   text linguist-documentation whitespace=trailing-space
+dep5                   text linguist-documentation whitespace-1
 Dockerfile             text whitespace-2
 gradlew                text eol=lf linguist-vendored whitespace=trailing-space
 gradlew.bat            text eol=crlf linguist-vendored whitespace=trailing-space
 LICENSE                text linguist-documentation linguist-vendored whitespace-0
-NOTICE                 text linguist-documentation whitespace=trailing-space
 README.md              linguist-documentation
 requirements.txt       whitespace-2
 

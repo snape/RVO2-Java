@@ -71,3 +71,6 @@ indent_size = 4
 
 [Brewfile]
 indent_size = 4
+
+[dep5]
+indent_size = 1
