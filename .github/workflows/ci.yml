@@ -67,7 +67,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: build test package
-        run: bazel test ...
+        run: bazel test --flaky_test_attempts=3 ...
         shell: bash
 
   bazel_macos:
@@ -86,7 +86,7 @@ jobs:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
         shell: zsh -efuo pipefail {0}
       - name: build test package
-        run: bazel test ...
+        run: bazel test --flaky_test_attempts=3 ...
         shell: zsh -efuo pipefail {0}
 
   bazel_ubuntu:
@@ -122,7 +122,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: build test package
-        run: bazel test ...
+        run: bazel test --flaky_test_attempts=3 ...
         shell: bash
 
   cmake_alpine:
@@ -153,7 +153,7 @@ jobs:
             --warn-uninitialized \
             ..
           cmake --build .
-          ctest .
+          ctest . --repeat after-timeout:3
           cmake --install .
           cpack -G TGZ
           cpack -G TGZ --config CPackSourceConfig.cmake
@@ -192,7 +192,7 @@ jobs:
             --warn-uninitialized \
             ..
           cmake --build .
-          ctest .
+          ctest . --repeat after-timeout:3
           cmake --install .
           cpack -G TGZ
           cpack -G TGZ --config CPackSourceConfig.cmake
@@ -231,7 +231,7 @@ jobs:
             --warn-uninitialized \
             ..
           cmake --build .
-          ctest .
+          ctest . --repeat after-timeout:3
           cmake --install .
           cpack -G RPM
           cpack -G RPM --config CPackSourceConfig.cmake
@@ -264,7 +264,7 @@ jobs:
             --warn-uninitialized \
             ..
           cmake --build .
-          ctest .
+          ctest . --repeat after-timeout:3
           cmake --install .
           cpack -G TGZ
           cpack -G TGZ --config CPackSourceConfig.cmake
@@ -305,7 +305,7 @@ jobs:
             --warn-uninitialized \
             ..
           cmake --build .
-          ctest .
+          ctest . --repeat after-timeout:3
           cmake --install .
           cpack -G RPM
           cpack -G RPM --config CPackSourceConfig.cmake
@@ -355,7 +355,7 @@ jobs:
             --warn-uninitialized \
             ..
           cmake --build .
-          ctest .
+          ctest . --repeat after-timeout:3
           cmake --install .
           cpack -G DEB
           cpack -G DEB --config CPackSourceConfig.cmake
@@ -388,7 +388,7 @@ jobs:
             --warn-uninitialized `
             ..
           cmake --build . --config Release
-          ctest . --build-config Release
+          ctest . --build-config Release --repeat after-timeout:3
           cmake --install . --config Release
           cpack -C Release -G ZIP
           cpack -C Release -G ZIP --config CPackSourceConfig.cmake
