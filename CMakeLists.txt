@@ -78,7 +78,7 @@ include(FetchContent)
 # cmake-lint: disable=C0301
 FetchContent_Declare(org_apache_commons_commons_math3
   DOWNLOAD_NO_EXTRACT ON
-  URL https://jcenter.bintray.com/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar
+  URL https://repo1.maven.org/maven2/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar
   URL_HASH SHA256=1e56d7b058d28b65abd256b8458e3885b674c1d588fa43cd7d1cbb9c7ef2b308
 )
 
