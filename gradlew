@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# SPDX-FileCopyrightText: © 2015-2022 the original authors.
+# SPDX-FileCopyrightText: © 2015-2023 the original authors.
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
