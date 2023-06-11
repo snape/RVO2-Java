@@ -1,5 +1,8 @@
+# -*- mode: bazel; -*-
+# vi: set ft=bazel:
+
 #
-# codeql.yml
+# WORKSPACE.bzlmod
 # RVO2 Library Java
 #
 # SPDX-FileCopyrightText: 2008 University of North Carolina at Chapel Hill
@@ -31,31 +34,24 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
----
-name: codeql
+module(
+    name = "rvo_java",
+    version = "2.0.0",
+)
 
-on:  # yamllint disable-line rule:truthy
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  schedule:
-    - cron: '0 6 * * 3'
+bazel_dep(name = "rules_java", version = "6.1.0")
+bazel_dep(name = "rules_jvm_external", version = "5.2")
 
-jobs:
-  analyze:
-    name: analyze
-    runs-on: ubuntu-22.04
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: initialize codeql
-        uses: github/codeql-action/init@v2
-        with:
-          languages: java
-      - name: autobuild
-        uses: github/codeql-action/autobuild@v2
-      - name: perform codeql analysis
-        uses: github/codeql-action/analyze@v2
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    artifacts = ["org.apache.commons:commons-math3:3.6.1"],
+    lock_file = "@//:maven_install.json",
+)
+use_repo(maven, "maven")
+
+non_module_deps = use_extension("//:extensions.bzl", "non_module_deps")
+use_repo(non_module_deps, "google_bazel_common")
+
+bazel_dep(name = "rules_license", version = "0.0.4")
+
+bazel_dep(name = "rules_pkg", version = "0.9.1", dev_dependency = True)

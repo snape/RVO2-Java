@@ -1,5 +1,8 @@
+# -*- mode: bazel; -*-
+# vi: set ft=bazel:
+
 #
-# codeql.yml
+# extensions.bzl
 # RVO2 Library Java
 #
 # SPDX-FileCopyrightText: 2008 University of North Carolina at Chapel Hill
@@ -31,31 +34,16 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
----
-name: codeql
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-on:  # yamllint disable-line rule:truthy
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  schedule:
-    - cron: '0 6 * * 3'
+def _non_module_deps_implementation(ctx):
+    http_archive(
+        name = "google_bazel_common",
+        sha256 = "17ea98149586dff60aa741c67fbd9a010fbb1507df90e741c50403bf5228bea3",
+        strip_prefix = "bazel-common-a9e1d8efd54cbf27249695b23775b75ca65bb59d",
+        urls = ["https://github.com/google/bazel-common/archive/a9e1d8efd54cbf27249695b23775b75ca65bb59d.tar.gz"],
+    )
 
-jobs:
-  analyze:
-    name: analyze
-    runs-on: ubuntu-22.04
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: initialize codeql
-        uses: github/codeql-action/init@v2
-        with:
-          languages: java
-      - name: autobuild
-        uses: github/codeql-action/autobuild@v2
-      - name: perform codeql analysis
-        uses: github/codeql-action/analyze@v2
+non_module_deps = module_extension(
+    implementation = _non_module_deps_implementation,
+)

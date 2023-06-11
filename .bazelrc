@@ -31,7 +31,7 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
-build --enable_platform_specific_config=true
+build --incompatible_strict_action_env=true
 
 build --javacopt "--release 11"
 
@@ -523,7 +523,16 @@ build --javacopt "-Xep:UrlInSee:WARN"
 build --javacopt "-Xep:UsingJsr305CheckReturnValue:WARN"
 
 build --legacy_external_runfiles=false
+build --remote_upload_local_results=false
 
 build:macos --apple_platform_type=macos
+
+common --enable_platform_specific_config=true
+common --heap_dump_on_oom=true
+
+startup --host_jvm_args=-DBAZEL_TRACK_SOURCE_DIRECTORIES=1
+
+test --incompatible_exclusive_test_sandboxed=true
+test --test_verbose_timeout_warnings=true
 
 try-import %workspace%/.user.bazelrc

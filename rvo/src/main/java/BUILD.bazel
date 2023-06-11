@@ -66,6 +66,7 @@ javadoc_library(
     name = "api",
     srcs = [":srcs"],
     external_javadoc_links = ["https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/"],
+    tags = ["requires-network"],
     visibility = ["//visibility:private"],
     deps = ["@maven//:org_apache_commons_commons_math3"],
 )
