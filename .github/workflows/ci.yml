@@ -513,7 +513,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: microsoft
           java-version: 17
@@ -751,7 +751,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: microsoft
           java-version: 17
