@@ -71,29 +71,14 @@ jobs:
         shell: bash
 
   bazel_macos:
-    name: bazel macos latest
-    runs-on: macos-latest
+    name: bazel macos 14
+    runs-on: macos-14
     steps:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup
         run: |
-          rm -f \
-            /usr/local/bin/2to3 \
-            /usr/local/bin/2to3-3.* \
-            /usr/local/bin/go \
-            /usr/local/bin/gofmt \
-            /usr/local/bin/idle3 \
-            /usr/local/bin/idle3.* \
-            /usr/local/bin/pydoc3 \
-            /usr/local/bin/pydoc3.* \
-            /usr/local/bin/python3 \
-            /usr/local/bin/python3.* \
-            /usr/local/bin/python3-config \
-            /usr/local/bin/python3.*-config \
-            /usr/local/lib/libtcl8.*.dylib \
-            /usr/local/lib/libtk8.*.dylib
-          brew update-reset -q
+          brew update -q
           brew upgrade -f -q
           brew bundle install -q --no-lock
           brew cleanup -q -s
@@ -172,29 +157,14 @@ jobs:
         shell: bash
 
   bzlmod_macos:
-    name: bzlmod macos latest
-    runs-on: macos-latest
+    name: bzlmod macos 14
+    runs-on: macos-14
     steps:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup
         run: |
-          rm -f \
-            /usr/local/bin/2to3 \
-            /usr/local/bin/2to3-3.* \
-            /usr/local/bin/go \
-            /usr/local/bin/gofmt \
-            /usr/local/bin/idle3 \
-            /usr/local/bin/idle3.* \
-            /usr/local/bin/pydoc3 \
-            /usr/local/bin/pydoc3.* \
-            /usr/local/bin/python3 \
-            /usr/local/bin/python3.* \
-            /usr/local/bin/python3-config \
-            /usr/local/bin/python3.*-config \
-            /usr/local/lib/libtcl8.*.dylib \
-            /usr/local/lib/libtk8.*.dylib
-          brew update-reset -q
+          brew update -q
           brew upgrade -f -q
           brew bundle install -q --no-lock
           brew cleanup -q -s
@@ -362,29 +332,14 @@ jobs:
         shell: bash
 
   cmake_macos:
-    name: cmake macos latest
-    runs-on: macos-latest
+    name: cmake macos 14
+    runs-on: macos-14
     steps:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup
         run: |
-          rm -f \
-            /usr/local/bin/2to3 \
-            /usr/local/bin/2to3-3.* \
-            /usr/local/bin/go \
-            /usr/local/bin/gofmt \
-            /usr/local/bin/idle3 \
-            /usr/local/bin/idle3.* \
-            /usr/local/bin/pydoc3 \
-            /usr/local/bin/pydoc3.* \
-            /usr/local/bin/python3 \
-            /usr/local/bin/python3.* \
-            /usr/local/bin/python3-config \
-            /usr/local/bin/python3.*-config \
-            /usr/local/lib/libtcl8.*.dylib \
-            /usr/local/lib/libtk8.*.dylib
-          brew update-reset -q
+          brew update -q
           brew upgrade -f -q
           brew bundle install -q --no-lock
           brew cleanup -q -s
@@ -411,7 +366,7 @@ jobs:
           cpack -G TGZ
           cpack -G TGZ --config CPackSourceConfig.cmake
         env:
-          JAVA_HOME: /usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home
+          JAVA_HOME: /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
         shell: zsh -efuo pipefail {0}
 
   cmake_rockylinux:
@@ -664,29 +619,14 @@ jobs:
         shell: bash
 
   gradle_macos:
-    name: gradle macos latest
-    runs-on: macos-latest
+    name: gradle macos 14
+    runs-on: macos-14
     steps:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup
         run: |
-          rm -f \
-            /usr/local/bin/2to3 \
-            /usr/local/bin/2to3-3.* \
-            /usr/local/bin/go \
-            /usr/local/bin/gofmt \
-            /usr/local/bin/idle3 \
-            /usr/local/bin/idle3.* \
-            /usr/local/bin/pydoc3 \
-            /usr/local/bin/pydoc3.* \
-            /usr/local/bin/python3 \
-            /usr/local/bin/python3.* \
-            /usr/local/bin/python3-config \
-            /usr/local/bin/python3.*-config \
-            /usr/local/lib/libtcl8.*.dylib \
-            /usr/local/lib/libtk8.*.dylib
-          brew update-reset -q
+          brew update -q
           brew upgrade -f -q
           brew bundle install -q --no-lock
           brew cleanup -q -s
@@ -697,7 +637,7 @@ jobs:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
         shell: zsh -efuo pipefail {0}
       - name: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -707,7 +647,7 @@ jobs:
       - name: build package
         run: ./gradlew build --no-daemon
         env:
-          JAVA_HOME: /usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home
+          JAVA_HOME: /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
         shell: zsh -efuo pipefail {0}
 
   gradle_ubuntu:
