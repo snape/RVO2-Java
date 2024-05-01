@@ -47,7 +47,7 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   bazel_arch:
     name: bazel arch latest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
       - name: setup
@@ -57,7 +57,7 @@ jobs:
             ca-certificates \
             gcc \
             git \
-            jdk-openjdk \
+            jdk21-openjdk \
             python \
             which
           rm -rf \
@@ -71,29 +71,14 @@ jobs:
         shell: bash
 
   bazel_macos:
-    name: bazel macos latest
-    runs-on: macos-latest
+    name: bazel macos 14
+    runs-on: macos-14
     steps:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup
         run: |
-          rm -f \
-            /usr/local/bin/2to3 \
-            /usr/local/bin/2to3-3.* \
-            /usr/local/bin/go \
-            /usr/local/bin/gofmt \
-            /usr/local/bin/idle3 \
-            /usr/local/bin/idle3.* \
-            /usr/local/bin/pydoc3 \
-            /usr/local/bin/pydoc3.* \
-            /usr/local/bin/python3 \
-            /usr/local/bin/python3.* \
-            /usr/local/bin/python3-config \
-            /usr/local/bin/python3.*-config \
-            /usr/local/lib/libtcl8.*.dylib \
-            /usr/local/lib/libtk8.*.dylib
-          brew update-reset -q
+          brew update -q
           brew upgrade -f -q
           brew bundle install -q --no-lock
           brew cleanup -q -s
@@ -108,8 +93,8 @@ jobs:
         shell: zsh -efuo pipefail {0}
 
   bazel_ubuntu:
-    name: bazel ubuntu 22.04
-    runs-on: ubuntu-22.04
+    name: bazel ubuntu latest
+    runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
       - name: setup
@@ -122,13 +107,13 @@ jobs:
               --no-install-recommends install \
             ca-certificates \
             git \
-            default-jdk \
             gnupg \
+            openjdk-21-jdk \
             python-is-python3 \
             wget
           wget -qO - https://bazel.build/bazel-release.pub.gpg 2>/dev/null \
             | gpg --dearmor - > /usr/share/keyrings/bazel-archive-keyring.gpg
-          echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8' \
+          echo 'deb [signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8' \
             > /etc/apt/sources.list.d/bazel.list
           apt-get -qq -o APT::Acquire::Retries=4 update \
             || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
@@ -148,7 +133,7 @@ jobs:
 
   bzlmod_arch:
     name: bzlmod arch latest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
       - name: setup
@@ -158,7 +143,7 @@ jobs:
             ca-certificates \
             gcc \
             git \
-            jdk-openjdk \
+            jdk21-openjdk \
             python \
             which
           rm -rf \
@@ -172,29 +157,14 @@ jobs:
         shell: bash
 
   bzlmod_macos:
-    name: bzlmod macos latest
-    runs-on: macos-latest
+    name: bzlmod macos 14
+    runs-on: macos-14
     steps:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup
         run: |
-          rm -f \
-            /usr/local/bin/2to3 \
-            /usr/local/bin/2to3-3.* \
-            /usr/local/bin/go \
-            /usr/local/bin/gofmt \
-            /usr/local/bin/idle3 \
-            /usr/local/bin/idle3.* \
-            /usr/local/bin/pydoc3 \
-            /usr/local/bin/pydoc3.* \
-            /usr/local/bin/python3 \
-            /usr/local/bin/python3.* \
-            /usr/local/bin/python3-config \
-            /usr/local/bin/python3.*-config \
-            /usr/local/lib/libtcl8.*.dylib \
-            /usr/local/lib/libtk8.*.dylib
-          brew update-reset -q
+          brew update -q
           brew upgrade -f -q
           brew bundle install -q --no-lock
           brew cleanup -q -s
@@ -209,8 +179,8 @@ jobs:
         shell: zsh -efuo pipefail {0}
 
   bzlmod_ubuntu:
-    name: bzlmod ubuntu 22.04
-    runs-on: ubuntu-22.04
+    name: bzlmod ubuntu latest
+    runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
       - name: setup
@@ -223,13 +193,13 @@ jobs:
               --no-install-recommends install \
             ca-certificates \
             git \
-            default-jdk \
             gnupg \
+            openjdk-21-jdk \
             python-is-python3 \
             wget
           wget -qO - https://bazel.build/bazel-release.pub.gpg 2>/dev/null \
             | gpg --dearmor - > /usr/share/keyrings/bazel-archive-keyring.gpg
-          echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8' \
+          echo 'deb [signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8' \
             > /etc/apt/sources.list.d/bazel.list
           apt-get -qq -o APT::Acquire::Retries=4 update \
             || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
@@ -248,9 +218,9 @@ jobs:
         shell: bash
 
   cmake_alpine:
-    name: cmake alpine 3
-    runs-on: ubuntu-22.04
-    container: alpine:3
+    name: cmake alpine latest
+    runs-on: ubuntu-latest
+    container: alpine:latest
     steps:
       - name: setup
         run: |
@@ -260,7 +230,7 @@ jobs:
             cmake \
             git \
             make \
-            openjdk11
+            openjdk21
         shell: sh
       - name: checkout
         uses: actions/checkout@v4
@@ -281,12 +251,12 @@ jobs:
           cpack -G TGZ
           cpack -G TGZ --config CPackSourceConfig.cmake
         env:
-          JAVA_HOME: /usr/lib/jvm/java-11-openjdk
+          JAVA_HOME: /usr/lib/jvm/java-21-openjdk
         shell: sh
 
   cmake_arch:
     name: cmake arch latest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
       - name: setup
@@ -295,7 +265,7 @@ jobs:
             ca-certificates \
             cmake \
             git \
-            jdk-openjdk \
+            jdk21-openjdk \
             make
           rm -rf \
             /var/cache/pacman/pkg/* \
@@ -323,7 +293,7 @@ jobs:
 
   cmake_fedora:
     name: cmake fedora latest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: fedora:latest
     steps:
       - name: setup
@@ -335,7 +305,7 @@ jobs:
             cmake \
             git \
             glibc-langpack-en \
-            java-11-openjdk-devel \
+            java-21-openjdk-devel \
             make \
             rpm-build
           dnf clean all
@@ -362,29 +332,14 @@ jobs:
         shell: bash
 
   cmake_macos:
-    name: cmake macos latest
-    runs-on: macos-latest
+    name: cmake macos 14
+    runs-on: macos-14
     steps:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup
         run: |
-          rm -f \
-            /usr/local/bin/2to3 \
-            /usr/local/bin/2to3-3.* \
-            /usr/local/bin/go \
-            /usr/local/bin/gofmt \
-            /usr/local/bin/idle3 \
-            /usr/local/bin/idle3.* \
-            /usr/local/bin/pydoc3 \
-            /usr/local/bin/pydoc3.* \
-            /usr/local/bin/python3 \
-            /usr/local/bin/python3.* \
-            /usr/local/bin/python3-config \
-            /usr/local/bin/python3.*-config \
-            /usr/local/lib/libtcl8.*.dylib \
-            /usr/local/lib/libtk8.*.dylib
-          brew update-reset -q
+          brew update -q
           brew upgrade -f -q
           brew bundle install -q --no-lock
           brew cleanup -q -s
@@ -411,12 +366,12 @@ jobs:
           cpack -G TGZ
           cpack -G TGZ --config CPackSourceConfig.cmake
         env:
-          JAVA_HOME: /usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home
+          JAVA_HOME: /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
         shell: zsh -efuo pipefail {0}
 
   cmake_rockylinux:
     name: cmake rockylinux 9
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: rockylinux:9
     steps:
       - name: setup
@@ -428,7 +383,7 @@ jobs:
             cmake \
             git \
             glibc-langpack-en \
-            java-11-openjdk-devel \
+            java-21-openjdk-devel \
             make \
             rpm-build
           dnf clean all
@@ -455,9 +410,9 @@ jobs:
         shell: bash
 
   cmake_ubuntu:
-    name: cmake ubuntu 22.04
-    runs-on: ubuntu-22.04
-    container: ubuntu:22.04
+    name: cmake ubuntu latest
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
     steps:
       - name: setup
         run: |
@@ -468,20 +423,10 @@ jobs:
           apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
               --no-install-recommends install \
             ca-certificates \
-            default-jdk \
+            cmake \
             git \
-            gnupg \
             make \
-            wget
-          wget -qO- https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null \
-            | gpg --dearmor - > /usr/share/keyrings/kitware-archive-keyring.gpg
-          echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' \
-            > /etc/apt/sources.list.d/kitware.list
-          apt-get -qq -o APT::Acquire::Retries=4 update \
-            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
-          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
-              --no-install-recommends install \
-            cmake
+            openjdk-21-jdk
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
           rm -rf /var/lib/apt/lists/*
         env:
@@ -513,10 +458,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: microsoft
-          java-version: 17
+          java-version: 21
       - name: setup
         run: |
           choco upgrade cmake.install -r -y --install-arguments=ADD_CMAKE_TO_PATH=System `
@@ -541,9 +486,9 @@ jobs:
         shell: pwsh
 
   gradle_alpine:
-    name: gradle alpine 3
-    runs-on: ubuntu-22.04
-    container: alpine:3
+    name: gradle alpine latest
+    runs-on: ubuntu-latest
+    container: alpine:latest
     steps:
       - name: setup
         run: |
@@ -551,12 +496,12 @@ jobs:
           apk add -q --no-cache \
             ca-certificates \
             git \
-            openjdk11
+            openjdk21
         shell: sh
       - name: checkout
         uses: actions/checkout@v4
       - name: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -566,12 +511,12 @@ jobs:
       - name: build package
         run: ./gradlew build
         env:
-          JAVA_HOME: /usr/lib/jvm/java-11-openjdk
+          JAVA_HOME: /usr/lib/jvm/java-21-openjdk
         shell: sh
 
   gradle_arch:
     name: gradle arch latest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
       - name: setup
@@ -579,7 +524,7 @@ jobs:
           pacman --needed --noconfirm --noprogressbar -S -u -y \
             ca-certificates \
             git \
-            jdk-openjdk \
+            jdk21-openjdk \
             which
           rm -rf \
             /var/cache/pacman/pkg/* \
@@ -588,7 +533,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -600,8 +545,8 @@ jobs:
         shell: bash
 
   gradle_rockylinux:
-    name: cmake rockylinux 9
-    runs-on: ubuntu-22.04
+    name: gradle rockylinux 9
+    runs-on: ubuntu-latest
     container: rockylinux:9
     steps:
       - name: setup
@@ -612,7 +557,7 @@ jobs:
             ca-certificates \
             git \
             glibc-langpack-en \
-            java-11-openjdk-devel \
+            java-21-openjdk-devel \
             which
           dnf clean all
           rm -rf /var/cache/yum
@@ -620,7 +565,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -633,7 +578,7 @@ jobs:
 
   gradle_fedora:
     name: gradle fedora latest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: fedora:latest
     steps:
       - name: setup
@@ -644,7 +589,7 @@ jobs:
             ca-certificates \
             git \
             glibc-langpack-en \
-            java-11-openjdk-devel \
+            java-21-openjdk-devel \
             which
           dnf clean all
           rm -rf /var/cache/yum
@@ -652,7 +597,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -664,29 +609,14 @@ jobs:
         shell: bash
 
   gradle_macos:
-    name: gradle macos latest
-    runs-on: macos-latest
+    name: gradle macos 14
+    runs-on: macos-14
     steps:
       - name: checkout
         uses: actions/checkout@v4
       - name: setup
         run: |
-          rm -f \
-            /usr/local/bin/2to3 \
-            /usr/local/bin/2to3-3.* \
-            /usr/local/bin/go \
-            /usr/local/bin/gofmt \
-            /usr/local/bin/idle3 \
-            /usr/local/bin/idle3.* \
-            /usr/local/bin/pydoc3 \
-            /usr/local/bin/pydoc3.* \
-            /usr/local/bin/python3 \
-            /usr/local/bin/python3.* \
-            /usr/local/bin/python3-config \
-            /usr/local/bin/python3.*-config \
-            /usr/local/lib/libtcl8.*.dylib \
-            /usr/local/lib/libtk8.*.dylib
-          brew update-reset -q
+          brew update -q
           brew upgrade -f -q
           brew bundle install -q --no-lock
           brew cleanup -q -s
@@ -697,7 +627,7 @@ jobs:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
         shell: zsh -efuo pipefail {0}
       - name: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -707,12 +637,12 @@ jobs:
       - name: build package
         run: ./gradlew build --no-daemon
         env:
-          JAVA_HOME: /usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home
+          JAVA_HOME: /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
         shell: zsh -efuo pipefail {0}
 
   gradle_ubuntu:
-    name: gradle ubuntu 22.04
-    runs-on: ubuntu-22.04
+    name: gradle ubuntu latest
+    runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
       - name: setup
@@ -724,8 +654,8 @@ jobs:
            apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
               --no-install-recommends install \
             ca-certificates \
-            default-jdk \
-            git
+            git \
+            openjdk-21-jdk
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
           rm -rf /var/lib/apt/lists/*
         env:
@@ -734,7 +664,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -751,10 +681,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: microsoft
-          java-version: 17
+          java-version: 21
           cache: gradle
       - name: build package
         run: gradlew.bat build --no-daemon
