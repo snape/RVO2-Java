@@ -458,7 +458,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: microsoft
           java-version: 21
@@ -681,7 +681,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: microsoft
           java-version: 21
