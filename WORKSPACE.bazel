@@ -83,9 +83,9 @@ pinned_maven_install()
 
 http_archive(
     name = "google_bazel_common",
-    sha256 = "fdcd5b4ed39efd8150ba584b56b08f9c03406183385121e8a11ddf8ae19f1db5",
-    strip_prefix = "bazel-common-d59d067c04e973f3c4aa34f6628bed97d6664c3c",
-    urls = ["https://github.com/google/bazel-common/archive/d59d067c04e973f3c4aa34f6628bed97d6664c3c.tar.gz"],
+    sha256 = "091991723e995f047986042c1559807aec7ddb2d1d18e1c1fa4633d06ce956f0",
+    strip_prefix = "bazel-common-692efe797f25b180a30354a4f1289b7c08d7fa86",
+    urls = ["https://github.com/google/bazel-common/archive/692efe797f25b180a30354a4f1289b7c08d7fa86.tar.gz"],
 )
 
 load("@google_bazel_common//:workspace_defs.bzl", "google_common_workspace_rules")
