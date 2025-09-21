@@ -56,9 +56,9 @@ rules_java_toolchains()
 
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "d31e369b854322ca5098ea12c69d7175ded971435e55c18dd9dd5f29cc5249ac",
-    strip_prefix = "rules_jvm_external-5.3",
-    urls = ["https://github.com/bazelbuild/rules_jvm_external/releases/download/5.3/rules_jvm_external-5.3.tar.gz"],
+    sha256 = "704a0197e4e966f96993260418f2542568198490456c21814f647ae7091f56f2",
+    strip_prefix = "rules_jvm_external-6.8",
+    urls = ["https://github.com/bazelbuild/rules_jvm_external/releases/download/6.8/rules_jvm_external-6.8.tar.gz"],
 )
 
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
