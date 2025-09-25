@@ -72,7 +72,7 @@ jobs:
 
   bazel_macos:
     name: bazel macos 14
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: checkout
         uses: actions/checkout@v5
@@ -158,7 +158,7 @@ jobs:
 
   bzlmod_macos:
     name: bzlmod macos 14
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: checkout
         uses: actions/checkout@v5
@@ -333,7 +333,7 @@ jobs:
 
   cmake_macos:
     name: cmake macos 14
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: checkout
         uses: actions/checkout@v5
@@ -610,7 +610,7 @@ jobs:
 
   gradle_macos:
     name: gradle macos 14
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: checkout
         uses: actions/checkout@v5
