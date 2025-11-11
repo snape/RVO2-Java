@@ -65,22 +65,22 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: build test package
-        run: bazel test --enable_bzlmod=0 --flaky_test_attempts=3 ...
+        run: bazel test --flaky_test_attempts=3 ...
         shell: bash
 
   bazel_macos:
     name: bazel macos 14
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: setup
         run: |
           brew update -q
           brew upgrade -f -q
-          brew bundle install -q --no-lock
+          brew bundle install -q
           brew cleanup -q -s
           rm -rf $(brew --cache)
         env:
@@ -89,7 +89,7 @@ jobs:
           HOMEBREW_NO_INSTALL_CLEANUP: 1
         shell: zsh -efuo pipefail {0}
       - name: build test package
-        run: bazel test --enable_bzlmod=0 --flaky_test_attempts=3 ...
+        run: bazel test --flaky_test_attempts=3 ...
         shell: zsh -efuo pipefail {0}
 
   bazel_ubuntu:
@@ -126,95 +126,9 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: build test package
-        run: bazel test --enable_bzlmod=0 --flaky_test_attempts=3 ...
-        shell: bash
-
-  bzlmod_arch:
-    name: bzlmod arch latest
-    runs-on: ubuntu-latest
-    container: archlinux:latest
-    steps:
-      - name: setup
-        run: |
-          pacman --needed --noconfirm --noprogressbar -S -u -y \
-            bazel \
-            ca-certificates \
-            gcc \
-            git \
-            jdk21-openjdk \
-            python \
-            which
-          rm -rf \
-            /var/cache/pacman/pkg/* \
-            /var/lib/pacman/sync/*
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: build test package
-        run: bazel test --enable_bzlmod=1 --flaky_test_attempts=3 ...
-        shell: bash
-
-  bzlmod_macos:
-    name: bzlmod macos 14
-    runs-on: macos-14
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: setup
-        run: |
-          brew update -q
-          brew upgrade -f -q
-          brew bundle install -q --no-lock
-          brew cleanup -q -s
-          rm -rf $(brew --cache)
-        env:
-          HOMEBREW_NO_ANALYTICS: 1
-          HOMEBREW_NO_AUTO_UPDATE: 1
-          HOMEBREW_NO_INSTALL_CLEANUP: 1
-        shell: zsh -efuo pipefail {0}
-      - name: build test package
-        run: bazel test --enable_bzlmod=1 --flaky_test_attempts=3 ...
-        shell: zsh -efuo pipefail {0}
-
-  bzlmod_ubuntu:
-    name: bzlmod ubuntu latest
-    runs-on: ubuntu-latest
-    container: ubuntu:latest
-    steps:
-      - name: setup
-        run: |
-          apt-get -qq -o APT::Acquire::Retries=4 update \
-            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
-          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
-            upgrade
-          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
-              --no-install-recommends install \
-            ca-certificates \
-            git \
-            gnupg \
-            openjdk-21-jdk \
-            python-is-python3 \
-            wget
-          wget -qO - https://bazel.build/bazel-release.pub.gpg 2>/dev/null \
-            | gpg --dearmor - > /usr/share/keyrings/bazel-archive-keyring.gpg
-          echo 'deb [signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8' \
-            > /etc/apt/sources.list.d/bazel.list
-          apt-get -qq -o APT::Acquire::Retries=4 update \
-            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
-          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
-              --no-install-recommends install \
-            bazel
-          apt-get -qq -o Dpkg::Use-Pty=0 autoremove
-          rm -rf /var/lib/apt/lists/*
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: build test package
-        run: bazel test --enable_bzlmod=1 --flaky_test_attempts=3 ...
+        run: bazel test --flaky_test_attempts=3 ...
         shell: bash
 
   cmake_alpine:
@@ -233,7 +147,7 @@ jobs:
             openjdk21
         shell: sh
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: build test package
         run: |
           mkdir _build
@@ -272,7 +186,7 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: build test package
         run: |
           mkdir _build
@@ -312,7 +226,7 @@ jobs:
           rm -rf /var/cache/yum
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: build test package
         run: |
           mkdir _build
@@ -333,15 +247,15 @@ jobs:
 
   cmake_macos:
     name: cmake macos 14
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: setup
         run: |
           brew update -q
           brew upgrade -f -q
-          brew bundle install -q --no-lock
+          brew bundle install -q
           brew cleanup -q -s
           rm -rf $(brew --cache)
         env:
@@ -390,7 +304,7 @@ jobs:
           rm -rf /var/cache/yum
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: build test package
         run: |
           mkdir _build
@@ -433,7 +347,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: build test package
         run: |
           mkdir _build
@@ -457,7 +371,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - uses: actions/setup-java@v5
         with:
           distribution: microsoft
@@ -499,7 +413,7 @@ jobs:
             openjdk21
         shell: sh
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: cache
         uses: actions/cache@v4
         with:
@@ -531,7 +445,7 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: cache
         uses: actions/cache@v4
         with:
@@ -563,7 +477,7 @@ jobs:
           rm -rf /var/cache/yum
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: cache
         uses: actions/cache@v4
         with:
@@ -595,7 +509,7 @@ jobs:
           rm -rf /var/cache/yum
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: cache
         uses: actions/cache@v4
         with:
@@ -610,15 +524,15 @@ jobs:
 
   gradle_macos:
     name: gradle macos 14
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: setup
         run: |
           brew update -q
           brew upgrade -f -q
-          brew bundle install -q --no-lock
+          brew bundle install -q
           brew cleanup -q -s
           rm -rf $(brew --cache)
         env:
@@ -662,7 +576,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: cache
         uses: actions/cache@v4
         with:
@@ -680,7 +594,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - uses: actions/setup-java@v5
         with:
           distribution: microsoft

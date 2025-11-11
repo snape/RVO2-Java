@@ -36,6 +36,7 @@ package edu.unc.cs.gamma.rvo;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /** Contains functions and constants used in multiple classes. */
+@SuppressWarnings("IdentifierName")
 final class RVOMath {
   /** A sufficiently small positive number. */
   static final double EPSILON = 0.00001;

@@ -41,5 +41,4 @@ _build/
 .reuse/
 build/
 cmake-build-*/
-cmake/
 gradle/
