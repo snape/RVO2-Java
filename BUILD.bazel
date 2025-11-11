@@ -35,19 +35,29 @@
 #
 
 load("@rules_license//rules:license.bzl", "license")
+load("@rules_license//rules:package_info.bzl", "package_info")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load("@rules_pkg//pkg:pkg.bzl", "pkg_deb", "pkg_tar")
 
-package(default_applicable_licenses = [":license"])
-
-licenses(["notice"])  # Apache-2.0
+package(default_package_metadata = [
+    ":license",
+    ":package_info",
+])
 
 license(
     name = "license",
     copyright_notice = "2008 University of North Carolina at Chapel Hill",
     license_kinds = ["@rules_license//licenses/spdx:Apache-2.0"],
     license_text = "LICENSE",
-    visibility = ["//visibility:public"],
+    visibility = ["//:__subpackages__"],
+)
+
+package_info(
+    name = "package_info",
+    package_name = "RVO2 Library Java",
+    package_url = "https://gamma.cs.unc.edu/RVO2/",
+    package_version = "2.0.0",
+    visibility = ["//:__subpackages__"],
 )
 
 exports_files(
@@ -60,7 +70,6 @@ pkg_files(
     srcs = ["LICENSE"],
     attributes = pkg_attributes(mode = "0644"),
     prefix = "usr/share/doc/rvo-java",
-    visibility = ["//visibility:private"],
 )
 
 pkg_tar(
@@ -70,19 +79,19 @@ pkg_tar(
         "//rvo/src/main/java:jar",
     ],
     extension = "tar.gz",
-    visibility = ["//visibility:private"],
 )
 
 pkg_deb(
     name = "deb",
     architecture = "all",
     data = ":tar",
+    depends = ["libcommons-math3-java"],
     description = "Optimal Reciprocal Collision Avoidance for Java",
     homepage = "https://gamma.cs.unc.edu/RVO2/",
+    license = "Apache-2",
     maintainer = "Jamie Snape",
-    package = "rvo-java",
+    package = "rvojava",
     priority = "optional",
-    section = "java",
+    section = "contrib/java",
     version = "2.0.0",
-    visibility = ["//visibility:private"],
 )

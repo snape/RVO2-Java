@@ -45,8 +45,38 @@ on:  # yamllint disable-line rule:truthy
     - cron: '0 5 * * *'
 
 jobs:
-  bazel_arch:
-    name: bazel arch latest
+  bazel-almalinux:
+    name: bazel almalinux amd64
+    runs-on: ubuntu-latest
+    container: almalinux:10
+    steps:
+      - name: setup
+        run: |
+          dnf makecache -q --refresh || (sleep 15; dnf makecache -q --refresh)
+          dnf upgrade -q -y
+          dnf install -q -y \
+            ca-certificates \
+            gcc-c++ \
+            git \
+            java-21-openjdk-devel \
+            python3 \
+            wget \
+            which
+          dnf clean all
+          rm -rf /var/cache/yum
+          wget -qO /usr/local/bin/bazelisk \
+            https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-amd64
+          chmod +x /usr/local/bin/bazelisk
+          ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: build test package
+        run: bazel test --flaky_test_attempts=3 ...
+        shell: bash
+
+  bazel-arch:
+    name: bazel arch linux amd64
     runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
@@ -70,8 +100,38 @@ jobs:
         run: bazel test --flaky_test_attempts=3 ...
         shell: bash
 
-  bazel_macos:
-    name: bazel macos 14
+  bazel-fedora:
+    name: bazel fedora linux amd64
+    runs-on: ubuntu-latest
+    container: fedora:44
+    steps:
+      - name: setup
+        run: |
+          dnf makecache -q --refresh || (sleep 15; dnf makecache -q --refresh)
+          dnf upgrade -q -y
+          dnf install -q -y \
+            ca-certificates \
+            gcc-c++ \
+            git \
+            java-21-openjdk-devel \
+            python3 \
+            wget \
+            which
+          dnf clean all
+          rm -rf /var/cache/yum
+          wget -qO /usr/local/bin/bazelisk \
+            https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-amd64
+          chmod +x /usr/local/bin/bazelisk
+          ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: build test package
+        run: bazel test --flaky_test_attempts=3 ...
+        shell: bash
+
+  bazel-macos:
+    name: bazel macos arm64
     runs-on: macos-15
     steps:
       - name: checkout
@@ -92,10 +152,39 @@ jobs:
         run: bazel test --flaky_test_attempts=3 ...
         shell: zsh -efuo pipefail {0}
 
-  bazel_ubuntu:
-    name: bazel ubuntu latest
+  bazel-opensuse:
+    name: bazel opensuse leap amd64
     runs-on: ubuntu-latest
-    container: ubuntu:latest
+    container: opensuse/leap:15
+    steps:
+      - name: setup
+        run: |
+          zypper -n -q ref || (sleep 15; zypper -n -q ref)
+          zypper -n -q up
+          zypper -n -q in --no-recommends \
+            ca-certificates \
+            gcc-c++ \
+            git \
+            java-21-openjdk-devel \
+            python3 \
+            wget \
+            which
+          zypper -n -q cc -a
+          wget -qO /usr/local/bin/bazelisk \
+            https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-amd64
+          chmod +x /usr/local/bin/bazelisk
+          ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: build test package
+        run: bazel test --flaky_test_attempts=3 ...
+        shell: bash
+
+  bazel-ubuntu:
+    name: bazel ubuntu amd64
+    runs-on: ubuntu-latest
+    container: ubuntu:24.04
     steps:
       - name: setup
         run: |
@@ -106,22 +195,16 @@ jobs:
           apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
               --no-install-recommends install \
             ca-certificates \
+            g++ \
             git \
-            gnupg \
             openjdk-21-jdk \
             python-is-python3 \
             wget
-          wget -qO - https://bazel.build/bazel-release.pub.gpg 2>/dev/null \
-            | gpg --dearmor - > /usr/share/keyrings/bazel-archive-keyring.gpg
-          echo 'deb [signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8' \
-            > /etc/apt/sources.list.d/bazel.list
-          apt-get -qq -o APT::Acquire::Retries=4 update \
-            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
-          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
-              --no-install-recommends install \
-            bazel
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
           rm -rf /var/lib/apt/lists/*
+          wget -q https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-amd64.deb
+          dpkg -i bazelisk-amd64.deb
+          rm -rf bazelisk-amd64.deb
         env:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
@@ -131,10 +214,82 @@ jobs:
         run: bazel test --flaky_test_attempts=3 ...
         shell: bash
 
-  cmake_alpine:
-    name: cmake alpine latest
+  bazel-ubuntu-arm64:
+    name: bazel ubuntu arm64
+    runs-on: ubuntu-24.04-arm
+    container: ubuntu:24.04
+    steps:
+      - name: setup
+        run: |
+          apt-get -qq -o APT::Acquire::Retries=4 update \
+            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+            upgrade
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+              --no-install-recommends install \
+            ca-certificates \
+            g++ \
+            git \
+            openjdk-21-jdk \
+            python-is-python3 \
+            wget
+          apt-get -qq -o Dpkg::Use-Pty=0 autoremove
+          rm -rf /var/lib/apt/lists/*
+          wget -q https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-arm64.deb
+          dpkg -i bazelisk-arm64.deb
+          rm -rf bazelisk-arm64.deb
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: build test package
+        run: bazel test --flaky_test_attempts=3 ...
+        shell: bash
+
+  cmake-almalinux:
+    name: cmake almalinux amd64
     runs-on: ubuntu-latest
-    container: alpine:latest
+    container: almalinux:10
+    steps:
+      - name: setup
+        run: |
+          dnf makecache -q --refresh || (sleep 15; dnf makecache -q --refresh)
+          dnf upgrade -q -y
+          dnf install -q -y \
+            ca-certificates \
+            cmake \
+            git \
+            java-21-openjdk-devel \
+            make \
+            rpm-build
+          dnf clean all
+          rm -rf /var/cache/yum
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: build test package
+        run: |
+          mkdir _build
+          cd _build
+          cmake \
+            -DBUILD_DOCUMENTATION:BOOL=ON \
+            -DBUILD_TESTING:BOOL=ON \
+            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DWARNINGS_AS_ERRORS:BOOL=ON \
+            --warn-uninitialized \
+            ..
+          cmake --build .
+          ctest . --repeat after-timeout:3
+          cmake --install .
+          cpack -G RPM
+          cpack -G RPM --config CPackSourceConfig.cmake
+        shell: bash
+
+  cmake-alpine:
+    name: cmake alpine linux amd64
+    runs-on: ubuntu-latest
+    container: alpine:3
     steps:
       - name: setup
         run: |
@@ -164,12 +319,10 @@ jobs:
           cmake --install .
           cpack -G TGZ
           cpack -G TGZ --config CPackSourceConfig.cmake
-        env:
-          JAVA_HOME: /usr/lib/jvm/java-21-openjdk
         shell: sh
 
-  cmake_arch:
-    name: cmake arch latest
+  cmake-arch:
+    name: cmake arch linux amd64
     runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
@@ -205,10 +358,10 @@ jobs:
           cpack -G TGZ --config CPackSourceConfig.cmake
         shell: bash
 
-  cmake_fedora:
-    name: cmake fedora latest
+  cmake-fedora:
+    name: cmake fedora linux amd64
     runs-on: ubuntu-latest
-    container: fedora:latest
+    container: fedora:44
     steps:
       - name: setup
         run: |
@@ -218,7 +371,6 @@ jobs:
             ca-certificates \
             cmake \
             git \
-            glibc-langpack-en \
             java-21-openjdk-devel \
             make \
             rpm-build
@@ -245,8 +397,8 @@ jobs:
           cpack -G RPM --config CPackSourceConfig.cmake
         shell: bash
 
-  cmake_macos:
-    name: cmake macos 14
+  cmake-macos:
+    name: cmake macos arm64
     runs-on: macos-15
     steps:
       - name: checkout
@@ -279,29 +431,25 @@ jobs:
           cmake --install .
           cpack -G TGZ
           cpack -G TGZ --config CPackSourceConfig.cmake
-        env:
-          JAVA_HOME: /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
         shell: zsh -efuo pipefail {0}
 
-  cmake_rockylinux:
-    name: cmake rockylinux 9
+  cmake-opensuse:
+    name: cmake opensuse leap amd64
     runs-on: ubuntu-latest
-    container: rockylinux:9
+    container: opensuse/leap:15
     steps:
       - name: setup
         run: |
-          dnf makecache -q --refresh || (sleep 15; dnf makecache -q --refresh)
-          dnf upgrade -q -y
-          dnf install -q -y \
+          zypper -n -q ref || (sleep 15; zypper -n -q ref)
+          zypper -n -q up
+          zypper -n -q in --no-recommends \
             ca-certificates \
             cmake \
             git \
-            glibc-langpack-en \
             java-21-openjdk-devel \
             make \
             rpm-build
-          dnf clean all
-          rm -rf /var/cache/yum
+          zypper -n -q cc -a
         shell: bash
       - name: checkout
         uses: actions/checkout@v5
@@ -323,10 +471,10 @@ jobs:
           cpack -G RPM --config CPackSourceConfig.cmake
         shell: bash
 
-  cmake_ubuntu:
-    name: cmake ubuntu latest
+  cmake-ubuntu:
+    name: cmake ubuntu amd64
     runs-on: ubuntu-latest
-    container: ubuntu:latest
+    container: ubuntu:24.04
     steps:
       - name: setup
         run: |
@@ -338,6 +486,8 @@ jobs:
               --no-install-recommends install \
             ca-certificates \
             cmake \
+            dpkg-dev \
+            file \
             git \
             make \
             openjdk-21-jdk
@@ -366,13 +516,59 @@ jobs:
           cpack -G DEB --config CPackSourceConfig.cmake
         shell: bash
 
-  cmake_windows:
-    name: cmake windows latest
+  cmake-ubuntu-arm64:
+    name: cmake ubuntu arm64
+    runs-on: ubuntu-24.04-arm
+    container: ubuntu:24.04
+    steps:
+      - name: setup
+        run: |
+          apt-get -qq -o APT::Acquire::Retries=4 update \
+            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+            upgrade
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+              --no-install-recommends install \
+            ca-certificates \
+            cmake \
+            dpkg-dev \
+            file \
+            git \
+            make \
+            openjdk-21-jdk
+          apt-get -qq -o Dpkg::Use-Pty=0 autoremove
+          rm -rf /var/lib/apt/lists/*
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: build test package
+        run: |
+          mkdir _build
+          cd _build
+          cmake \
+            -DBUILD_DOCUMENTATION:BOOL=ON \
+            -DBUILD_TESTING:BOOL=ON \
+            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DWARNINGS_AS_ERRORS:BOOL=ON \
+            --warn-uninitialized \
+            ..
+          cmake --build .
+          ctest . --repeat after-timeout:3
+          cmake --install .
+          cpack -G DEB
+          cpack -G DEB --config CPackSourceConfig.cmake
+        shell: bash
+
+  cmake-windows:
+    name: cmake windows amd64
     runs-on: windows-latest
     steps:
       - name: checkout
         uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
+      - name: setup-java
+        uses: actions/setup-java@v5
         with:
           distribution: microsoft
           java-version: 21
@@ -388,21 +584,51 @@ jobs:
           cmake `
             -DBUILD_DOCUMENTATION:BOOL=ON `
             -DBUILD_TESTING:BOOL=ON `
-            -DCMAKE_INSTALL_PREFIX:PATH=$Env:GITHUB_WORKSPACE\_build\install `
+            -DCMAKE_INSTALL_PREFIX:PATH=install `
             -DWARNINGS_AS_ERRORS:BOOL=ON `
             --warn-uninitialized `
             ..
           cmake --build . --config Release
           ctest . --build-config Release --repeat after-timeout:3
-          cmake --install . --config Release
+          cmake --install .
           cpack -C Release -G ZIP
           cpack -C Release -G ZIP --config CPackSourceConfig.cmake
         shell: pwsh
 
-  gradle_alpine:
-    name: gradle alpine latest
+  gradle-almalinux:
+    name: gradle almalinux amd64
     runs-on: ubuntu-latest
-    container: alpine:latest
+    container: almalinux:10
+    steps:
+      - name: setup
+        run: |
+          dnf makecache -q --refresh || (sleep 15; dnf makecache -q --refresh)
+          dnf upgrade -q -y
+          dnf install -q -y \
+            ca-certificates \
+            git \
+            java-21-openjdk-devel
+          dnf clean all
+          rm -rf /var/cache/yum
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: almalinux-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: almalinux-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-alpine:
+    name: gradle alpine linux amd64
+    runs-on: ubuntu-latest
+    container: alpine:3
     steps:
       - name: setup
         run: |
@@ -423,13 +649,11 @@ jobs:
           key: alpine-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: alpine-gradle-
       - name: build package
-        run: ./gradlew build
-        env:
-          JAVA_HOME: /usr/lib/jvm/java-21-openjdk
+        run: ./gradlew build --no-daemon
         shell: sh
 
-  gradle_arch:
-    name: gradle arch latest
+  gradle-arch:
+    name: gradle arch linux amd64
     runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
@@ -438,8 +662,7 @@ jobs:
           pacman --needed --noconfirm --noprogressbar -S -u -y \
             ca-certificates \
             git \
-            jdk21-openjdk \
-            which
+            jdk21-openjdk
           rm -rf \
             /var/cache/pacman/pkg/* \
             /var/lib/pacman/sync/*
@@ -458,10 +681,10 @@ jobs:
         run: ./gradlew build --no-daemon
         shell: bash
 
-  gradle_rockylinux:
-    name: gradle rockylinux 9
+  gradle-fedora:
+    name: gradle fedora linux amd64
     runs-on: ubuntu-latest
-    container: rockylinux:9
+    container: fedora:44
     steps:
       - name: setup
         run: |
@@ -470,41 +693,7 @@ jobs:
           dnf install -q -y \
             ca-certificates \
             git \
-            glibc-langpack-en \
-            java-21-openjdk-devel \
-            which
-          dnf clean all
-          rm -rf /var/cache/yum
-        shell: bash
-      - name: checkout
-        uses: actions/checkout@v5
-      - name: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: rockylinux-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: rockylinux-gradle-
-      - name: build package
-        run: ./gradlew build --no-daemon
-        shell: bash
-
-  gradle_fedora:
-    name: gradle fedora latest
-    runs-on: ubuntu-latest
-    container: fedora:latest
-    steps:
-      - name: setup
-        run: |
-          dnf makecache -q --refresh || (sleep 15; dnf makecache -q --refresh)
-          dnf upgrade -q -y
-          dnf install -q -y \
-            ca-certificates \
-            git \
-            glibc-langpack-en \
-            java-21-openjdk-devel \
-            which
+            java-21-openjdk-devel
           dnf clean all
           rm -rf /var/cache/yum
         shell: bash
@@ -522,8 +711,8 @@ jobs:
         run: ./gradlew build --no-daemon
         shell: bash
 
-  gradle_macos:
-    name: gradle macos 14
+  gradle-macos:
+    name: gradle macos arm64
     runs-on: macos-15
     steps:
       - name: checkout
@@ -554,10 +743,39 @@ jobs:
           JAVA_HOME: /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
         shell: zsh -efuo pipefail {0}
 
-  gradle_ubuntu:
-    name: gradle ubuntu latest
+  gradle-opensuse:
+    name: gradle opensuse leap amd64
     runs-on: ubuntu-latest
-    container: ubuntu:latest
+    container: opensuse/leap:15
+    steps:
+      - name: setup
+        run: |
+          zypper -n -q ref || (sleep 15; zypper -n -q ref)
+          zypper -n -q up
+          zypper -n -q in --no-recommends \
+            ca-certificates \
+            git \
+            java-21-openjdk-devel
+          zypper -n -q cc -a
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: opensuse-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: opensuse-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-ubuntu:
+    name: gradle ubuntu amd64
+    runs-on: ubuntu-latest
+    container: ubuntu:24.04
     steps:
       - name: setup
         run: |
@@ -565,7 +783,7 @@ jobs:
             || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
           apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
             upgrade
-           apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
               --no-install-recommends install \
             ca-certificates \
             git \
@@ -589,13 +807,49 @@ jobs:
         run: ./gradlew build --no-daemon
         shell: bash
 
-  gradle_windows:
-    name: gradle windows latest
+  gradle-ubuntu-arm64:
+    name: gradle ubuntu arm64
+    runs-on: ubuntu-24.04-arm
+    container: ubuntu:24.04
+    steps:
+      - name: setup
+        run: |
+          apt-get -qq -o APT::Acquire::Retries=4 update \
+            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+            upgrade
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+              --no-install-recommends install \
+            ca-certificates \
+            git \
+            openjdk-21-jdk
+          apt-get -qq -o Dpkg::Use-Pty=0 autoremove
+          rm -rf /var/lib/apt/lists/*
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v5
+      - name: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ubuntu-arm64-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ubuntu-arm64-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-windows:
+    name: gradle windows amd64
     runs-on: windows-latest
     steps:
       - name: checkout
         uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
+      - name: setup-java
+        uses: actions/setup-java@v5
         with:
           distribution: microsoft
           java-version: 21
