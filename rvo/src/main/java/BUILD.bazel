@@ -37,9 +37,10 @@ load("@google_bazel_common//tools/javadoc:javadoc.bzl", "javadoc_library")
 load("@rules_java//java:defs.bzl", "java_library")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 
-package(default_applicable_licenses = ["//:license"])
-
-licenses(["notice"])  # Apache-2.0
+package(default_package_metadata = [
+    "//:license",
+    "//:package_info",
+])
 
 filegroup(
     name = "srcs",
@@ -52,14 +53,13 @@ filegroup(
         "edu/unc/cs/gamma/rvo/Simulator.java",
         "edu/unc/cs/gamma/rvo/package-info.java",
     ],
-    visibility = ["//visibility:private"],
 )
 
 java_library(
     name = "rvo",
     srcs = [":srcs"],
     visibility = ["//visibility:public"],
-    deps = ["@maven//:org_apache_commons_commons_math3"],
+    deps = ["@rvo_java_maven//:org_apache_commons_commons_math3"],
 )
 
 javadoc_library(
@@ -67,8 +67,7 @@ javadoc_library(
     srcs = [":srcs"],
     external_javadoc_links = ["https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/"],
     tags = ["requires-network"],
-    visibility = ["//visibility:private"],
-    deps = ["@maven//:org_apache_commons_commons_math3"],
+    deps = ["@rvo_java_maven//:org_apache_commons_commons_math3"],
 )
 
 pkg_files(

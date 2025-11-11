@@ -36,9 +36,10 @@
 
 load("@rules_java//java:defs.bzl", "java_test")
 
-package(default_applicable_licenses = ["//:license"])
-
-licenses(["notice"])  # Apache-2.0
+package(default_package_metadata = [
+    "//:license",
+    "//:package_info",
+])
 
 java_test(
     name = "circle",
@@ -48,9 +49,8 @@ java_test(
     main_class = "edu.unc.cs.gamma.rvo.examples.Circle",
     tags = ["block-network"],
     use_testrunner = False,
-    visibility = ["//visibility:private"],
     deps = [
         "//rvo/src/main/java:rvo",
-        "@maven//:org_apache_commons_commons_math3",
+        "@rvo_java_maven//:org_apache_commons_commons_math3",
     ],
 )

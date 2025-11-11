@@ -38,5 +38,8 @@
 /.gradle/
 /.idea/
 /.user.bazelrc
+/.venv/
 /bazel-*
 /cmake-build-*/
+/CMakeUserPresets.json
+/MODULE.bazel.lock
