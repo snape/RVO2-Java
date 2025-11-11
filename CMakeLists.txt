@@ -34,18 +34,13 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
-cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.26)
 
 project(RVOJava
   VERSION 2.0.0
   DESCRIPTION "Optimal Reciprocal Collision Avoidance for Java"
   HOMEPAGE_URL https://gamma.cs.unc.edu/RVO2/
   LANGUAGES NONE)
-
-list(INSERT CMAKE_MODULE_PATH 0 "${PROJECT_SOURCE_DIR}/cmake/modules")
-if(CMAKE_VERSION VERSION_LESS 3.18)
-  list(INSERT CMAKE_MODULE_PATH 0 "${PROJECT_SOURCE_DIR}/cmake/modules/3.18")
-endif()
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   # cmake-lint: disable=C0301
@@ -58,7 +53,7 @@ endif()
 
 include(CTest)
 
-find_package(Java 11 REQUIRED COMPONENTS Development)
+find_package(Java 21 REQUIRED COMPONENTS Development)
 include(UseJava)
 
 option(WARNINGS_AS_ERRORS "Turn compiler warnings into errors" OFF)
@@ -79,12 +74,7 @@ FetchContent_Declare(org_apache_commons_commons_math3
   URL_HASH SHA256=1e56d7b058d28b65abd256b8458e3885b674c1d588fa43cd7d1cbb9c7ef2b308
 )
 
-FetchContent_GetProperties(org_apache_commons_commons_math3)
-
-if(NOT org_apache_commons_commons_math3_POPULATED)
-  message(STATUS "Downloading commons-math3 JAR file...")
-  FetchContent_Populate(org_apache_commons_commons_math3)
-endif()
+FetchContent_MakeAvailable(org_apache_commons_commons_math3)
 
 find_jar(RVOJava_COMMONS_MATH3_JAR_FILE
   NAMES commons-math3
@@ -159,20 +149,23 @@ set(CPACK_SOURCE_IGNORE_FILES
   Brewfile)
 set(CPACK_SOURCE_STRIP_FILES ON)
 
+set(CPACK_DEBIAN_COMPRESSION_TYPE zstd)
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
 set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE all)
-set(CPACK_DEBIAN_PACKAGE_DEPENDS)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS libcommons-math3-java)
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE ${PROJECT_HOMEPAGE_URL})
 set(CPACK_DEBIAN_PACKAGE_SECTION contrib/java)
 
-set(CPACK_FREEBSD_PACKAGE_DEPS)
+set(CPACK_FREEBSD_PACKAGE_CATEGORIES java)
+set(CPACK_FREEBSD_PACKAGE_DEPS "java/openjdk21" "math/apache-commons-math")
 set(CPACK_FREEBSD_PACKAGE_LICENSE APACHE20)
+set(CPACK_FREEBSD_PACKAGE_ORIGIN "java/${CPACK_PACKAGE_NAME}")
 set(CPACK_FREEBSD_PACKAGE_WWW ${PROJECT_HOMEPAGE_URL})
 
 set(CPACK_RPM_FILE_NAME RPM-DEFAULT)
 set(CPACK_RPM_PACKAGE_ARCHITECTURE noarch)
 set(CPACK_RPM_PACKAGE_LICENSE "ASL 2.0")
-set(CPACK_RPM_PACKAGE_REQUIRES "java-headless >= 1:1.8")
+set(CPACK_RPM_PACKAGE_REQUIRES "apache-commons-math >= 3.6.1, java-headless >= 1:21")
 set(CPACK_RPM_PACKAGE_URL ${PROJECT_HOMEPAGE_URL})
 
 include(CPack)

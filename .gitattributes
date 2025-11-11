@@ -80,6 +80,5 @@ requirements.txt       whitespace-2
 
 .github/**             export-ignore
 .github/**/*.md        linguist-documentation
-cmake/modules/3.18/**  linguist-vendored
 gradle/**              linguist-vendored
 LICENSES/**/*.txt      linguist-documentation linguist-vendored whitespace-0

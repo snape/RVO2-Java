@@ -2,7 +2,7 @@
 # vi: set ft=bazel:
 
 #
-# WORKSPACE.bzlmod
+# MODULE.bazel
 # RVO2 Library Java
 #
 # SPDX-FileCopyrightText: 2008 University of North Carolina at Chapel Hill
@@ -39,15 +39,18 @@ module(
     version = "2.0.0",
 )
 
-bazel_dep(name = "rules_java", version = "7.3.1")
-bazel_dep(name = "rules_jvm_external", version = "5.3")
+bazel_dep(name = "rules_java", version = "9.0.3")
+bazel_dep(name = "rules_jvm_external", version = "6.9")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
+    name = "rvo_java_maven",
     artifacts = ["org.apache.commons:commons-math3:3.6.1"],
     lock_file = "@//:maven_install.json",
 )
-use_repo(maven, "maven")
+use_repo(maven, "rvo_java_maven")
+
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
 
 non_module_deps = use_extension("//:extensions.bzl", "non_module_deps")
 use_repo(non_module_deps, "google_bazel_common")
