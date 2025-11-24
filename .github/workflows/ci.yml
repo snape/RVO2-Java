@@ -729,14 +729,6 @@ jobs:
           HOMEBREW_NO_AUTO_UPDATE: 1
           HOMEBREW_NO_INSTALL_CLEANUP: 1
         shell: zsh -efuo pipefail {0}
-      - name: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: macos-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: macos-gradle-
       - name: build package
         run: ./gradlew build --no-daemon
         env:
