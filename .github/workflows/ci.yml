@@ -70,7 +70,7 @@ jobs:
           ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: bazel test --flaky_test_attempts=3 ...
         shell: bash
@@ -95,7 +95,7 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: bazel test --flaky_test_attempts=3 ...
         shell: bash
@@ -125,7 +125,7 @@ jobs:
           ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: bazel test --flaky_test_attempts=3 ...
         shell: bash
@@ -135,7 +135,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: setup
         run: |
           brew update -q
@@ -176,7 +176,7 @@ jobs:
           ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: bazel test --flaky_test_attempts=3 ...
         shell: bash
@@ -209,7 +209,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: bazel test --flaky_test_attempts=3 ...
         shell: bash
@@ -242,7 +242,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: bazel test --flaky_test_attempts=3 ...
         shell: bash
@@ -267,7 +267,7 @@ jobs:
           rm -rf /var/cache/yum
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: |
           mkdir _build
@@ -302,7 +302,7 @@ jobs:
             openjdk21
         shell: sh
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: |
           mkdir _build
@@ -339,7 +339,7 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: |
           mkdir _build
@@ -378,7 +378,7 @@ jobs:
           rm -rf /var/cache/yum
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: |
           mkdir _build
@@ -402,7 +402,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: setup
         run: |
           brew update -q
@@ -452,7 +452,7 @@ jobs:
           zypper -n -q cc -a
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: |
           mkdir _build
@@ -497,7 +497,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: |
           mkdir _build
@@ -542,7 +542,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: build test package
         run: |
           mkdir _build
@@ -566,7 +566,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: setup-java
         uses: actions/setup-java@v5
         with:
@@ -612,7 +612,7 @@ jobs:
           rm -rf /var/cache/yum
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: cache
         uses: actions/cache@v4
         with:
@@ -639,7 +639,7 @@ jobs:
             openjdk21
         shell: sh
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: cache
         uses: actions/cache@v4
         with:
@@ -668,7 +668,7 @@ jobs:
             /var/lib/pacman/sync/*
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: cache
         uses: actions/cache@v4
         with:
@@ -698,7 +698,7 @@ jobs:
           rm -rf /var/cache/yum
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: cache
         uses: actions/cache@v4
         with:
@@ -716,7 +716,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: setup
         run: |
           brew update -q
@@ -751,7 +751,7 @@ jobs:
           zypper -n -q cc -a
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: cache
         uses: actions/cache@v4
         with:
@@ -786,7 +786,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: cache
         uses: actions/cache@v4
         with:
@@ -821,7 +821,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         shell: bash
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: cache
         uses: actions/cache@v4
         with:
@@ -839,7 +839,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: setup-java
         uses: actions/setup-java@v5
         with:
