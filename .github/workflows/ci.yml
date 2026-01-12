@@ -614,7 +614,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
       - name: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -641,7 +641,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
       - name: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -670,7 +670,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
       - name: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -700,7 +700,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
       - name: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -753,7 +753,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
       - name: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -788,7 +788,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
       - name: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -823,7 +823,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
       - name: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
