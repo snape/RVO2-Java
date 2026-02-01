@@ -58,7 +58,7 @@ jobs:
             ca-certificates \
             gcc-c++ \
             git \
-            java-21-openjdk-devel \
+            java-25-openjdk-devel \
             python3 \
             wget \
             which
@@ -86,7 +86,7 @@ jobs:
             ca-certificates \
             gcc \
             git \
-            jdk21-openjdk \
+            jdk25-openjdk \
             python \
             wget \
             which
@@ -117,7 +117,7 @@ jobs:
             ca-certificates \
             gcc-c++ \
             git \
-            java-21-openjdk-devel \
+            java-25-openjdk-devel \
             python3 \
             wget \
             which
@@ -169,7 +169,7 @@ jobs:
             ca-certificates \
             gcc-c++ \
             git \
-            java-21-openjdk-devel \
+            java-25-openjdk-devel \
             python3 \
             wget \
             which
@@ -201,7 +201,7 @@ jobs:
             ca-certificates \
             g++ \
             git \
-            openjdk-21-jdk \
+            openjdk-25-jdk \
             python-is-python3 \
             wget
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
@@ -234,7 +234,7 @@ jobs:
             ca-certificates \
             g++ \
             git \
-            openjdk-21-jdk \
+            openjdk-25-jdk \
             python-is-python3 \
             wget
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
@@ -264,7 +264,7 @@ jobs:
             ca-certificates \
             cmake \
             git \
-            java-21-openjdk-devel \
+            java-25-openjdk-devel \
             make \
             rpm-build
           dnf clean all
@@ -303,7 +303,7 @@ jobs:
             cmake \
             git \
             make \
-            openjdk21
+            openjdk25
         shell: sh
       - name: checkout
         uses: actions/checkout@v6
@@ -336,7 +336,7 @@ jobs:
             ca-certificates \
             cmake \
             git \
-            jdk21-openjdk \
+            jdk25-openjdk \
             make
           rm -rf \
             /var/cache/pacman/pkg/* \
@@ -375,7 +375,7 @@ jobs:
             ca-certificates \
             cmake \
             git \
-            java-21-openjdk-devel \
+            java-25-openjdk-devel \
             make \
             rpm-build
           dnf clean all
@@ -450,7 +450,7 @@ jobs:
             ca-certificates \
             cmake \
             git \
-            java-21-openjdk-devel \
+            java-25-openjdk-devel \
             make \
             rpm-build
           zypper -n -q cc -a
@@ -494,7 +494,7 @@ jobs:
             file \
             git \
             make \
-            openjdk-21-jdk
+            openjdk-25-jdk
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
           rm -rf /var/lib/apt/lists/*
         env:
@@ -539,7 +539,7 @@ jobs:
             file \
             git \
             make \
-            openjdk-21-jdk
+            openjdk-25-jdk
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
           rm -rf /var/lib/apt/lists/*
         env:
@@ -575,7 +575,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: microsoft
-          java-version: 21
+          java-version: 25
       - name: setup
         run: |
           choco upgrade cmake.install -r -y --install-arguments=ADD_CMAKE_TO_PATH=System `
@@ -611,7 +611,7 @@ jobs:
           dnf install -q -y \
             ca-certificates \
             git \
-            java-21-openjdk-devel
+            java-25-openjdk-devel
           dnf clean all
           rm -rf /var/cache/yum
         shell: bash
@@ -640,7 +640,7 @@ jobs:
           apk add -q --no-cache \
             ca-certificates \
             git \
-            openjdk21
+            openjdk25
         shell: sh
       - name: checkout
         uses: actions/checkout@v6
@@ -666,7 +666,7 @@ jobs:
           pacman --needed --noconfirm --noprogressbar -S -u -y \
             ca-certificates \
             git \
-            jdk21-openjdk
+            jdk25-openjdk
           rm -rf \
             /var/cache/pacman/pkg/* \
             /var/lib/pacman/sync/*
@@ -697,7 +697,7 @@ jobs:
           dnf install -q -y \
             ca-certificates \
             git \
-            java-21-openjdk-devel
+            java-25-openjdk-devel
           dnf clean all
           rm -rf /var/cache/yum
         shell: bash
@@ -751,7 +751,7 @@ jobs:
           zypper -n -q in --no-recommends \
             ca-certificates \
             git \
-            java-21-openjdk-devel
+            java-25-openjdk-devel
           zypper -n -q cc -a
         shell: bash
       - name: checkout
@@ -783,7 +783,7 @@ jobs:
               --no-install-recommends install \
             ca-certificates \
             git \
-            openjdk-21-jdk
+            openjdk-25-jdk
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
           rm -rf /var/lib/apt/lists/*
         env:
@@ -818,7 +818,7 @@ jobs:
               --no-install-recommends install \
             ca-certificates \
             git \
-            openjdk-21-jdk
+            openjdk-25-jdk
           apt-get -qq -o Dpkg::Use-Pty=0 autoremove
           rm -rf /var/lib/apt/lists/*
         env:
@@ -848,7 +848,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: microsoft
-          java-version: 21
+          java-version: 25
           cache: gradle
       - name: build package
         run: gradlew.bat build --no-daemon
