@@ -169,7 +169,7 @@ jobs:
             ca-certificates \
             gcc-c++ \
             git \
-            java-25-openjdk-devel \
+            java-21-openjdk-devel \
             python3 \
             wget \
             which
@@ -450,7 +450,7 @@ jobs:
             ca-certificates \
             cmake \
             git \
-            java-25-openjdk-devel \
+            java-21-openjdk-devel \
             make \
             rpm-build
           zypper -n -q cc -a
@@ -751,7 +751,7 @@ jobs:
           zypper -n -q in --no-recommends \
             ca-certificates \
             git \
-            java-25-openjdk-devel
+            java-21-openjdk-devel
           zypper -n -q cc -a
         shell: bash
       - name: checkout
