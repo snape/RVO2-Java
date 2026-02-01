@@ -31,7 +31,7 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
-build --javacopt "--release 11"
+build --javacopt "--release 21"
 
 build --javacopt "-Xep:AlwaysThrows:ERROR"
 build --javacopt "-Xep:AndroidInjectionBeforeSuper:OFF"
@@ -526,6 +526,11 @@ build:macos --apple_platform_type=macos
 
 common --enable_platform_specific_config=true
 common --heap_dump_on_oom=true
+
+common --java_language_version=21
+common --java_runtime_version=remotejdk_21
+common --tool_java_language_version=21
+common --tool_java_runtime_version=remotejdk_21
 
 test --test_verbose_timeout_warnings=true
 
