@@ -96,7 +96,7 @@ jobs:
           wget -qO /usr/local/bin/bazelisk \
             https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-amd64
           chmod +x /usr/local/bin/bazelisk
-          ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel  
+          ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
         shell: bash
       - name: checkout
         uses: actions/checkout@v6
@@ -158,7 +158,7 @@ jobs:
   bazel-opensuse:
     name: bazel opensuse leap amd64
     runs-on: ubuntu-latest
-    container: opensuse/leap:15
+    container: opensuse/leap:16.0
     steps:
       - name: setup
         run: |
@@ -278,7 +278,7 @@ jobs:
           cmake \
             -DBUILD_DOCUMENTATION:BOOL=ON \
             -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" \
             -DWARNINGS_AS_ERRORS:BOOL=ON \
             --warn-uninitialized \
             ..
@@ -313,7 +313,7 @@ jobs:
           cmake \
             -DBUILD_DOCUMENTATION:BOOL=ON \
             -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" \
             -DWARNINGS_AS_ERRORS:BOOL=ON \
             --warn-uninitialized \
             ..
@@ -350,7 +350,7 @@ jobs:
           cmake \
             -DBUILD_DOCUMENTATION:BOOL=ON \
             -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" \
             -DWARNINGS_AS_ERRORS:BOOL=ON \
             --warn-uninitialized \
             ..
@@ -389,7 +389,7 @@ jobs:
           cmake \
             -DBUILD_DOCUMENTATION:BOOL=ON \
             -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" \
             -DWARNINGS_AS_ERRORS:BOOL=ON \
             --warn-uninitialized \
             ..
@@ -424,7 +424,7 @@ jobs:
           cmake \
             -DBUILD_DOCUMENTATION:BOOL=ON \
             -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" \
             -DWARNINGS_AS_ERRORS:BOOL=ON \
             --warn-uninitialized \
             ..
@@ -438,7 +438,7 @@ jobs:
   cmake-opensuse:
     name: cmake opensuse leap amd64
     runs-on: ubuntu-latest
-    container: opensuse/leap:15
+    container: opensuse/leap:16.0
     steps:
       - name: setup
         run: |
@@ -462,7 +462,7 @@ jobs:
           cmake \
             -DBUILD_DOCUMENTATION:BOOL=ON \
             -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" \
             -DWARNINGS_AS_ERRORS:BOOL=ON \
             --warn-uninitialized \
             ..
@@ -507,7 +507,7 @@ jobs:
           cmake \
             -DBUILD_DOCUMENTATION:BOOL=ON \
             -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" \
             -DWARNINGS_AS_ERRORS:BOOL=ON \
             --warn-uninitialized \
             ..
@@ -552,7 +552,7 @@ jobs:
           cmake \
             -DBUILD_DOCUMENTATION:BOOL=ON \
             -DBUILD_TESTING:BOOL=ON \
-            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/_build/install \
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" \
             -DWARNINGS_AS_ERRORS:BOOL=ON \
             --warn-uninitialized \
             ..
@@ -586,7 +586,7 @@ jobs:
           cmake `
             -DBUILD_DOCUMENTATION:BOOL=ON `
             -DBUILD_TESTING:BOOL=ON `
-            -DCMAKE_INSTALL_PREFIX:PATH=install `
+            -DCMAKE_INSTALL_PREFIX:PATH="${GITHUB_WORKSPACE}/_build/install" `
             -DWARNINGS_AS_ERRORS:BOOL=ON `
             --warn-uninitialized `
             ..
@@ -739,7 +739,7 @@ jobs:
   gradle-opensuse:
     name: gradle opensuse leap amd64
     runs-on: ubuntu-latest
-    container: opensuse/leap:15
+    container: opensuse/leap:16.0
     steps:
       - name: setup
         run: |
