@@ -55,6 +55,7 @@
 *.md                   text diff=markdown whitespace-md
 *.properties           text whitespace-4
 *.txt                  text
+*.xml                  text
 *.yaml                 text whitespace-2
 *.yml                  text whitespace-2
 
