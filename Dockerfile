@@ -64,7 +64,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     nano \
     netbase \
     ninja-build \
-    openjdk-21-jdk-headless \
+    openjdk-25-jdk-headless \
     openssh-client \
     python3 \
     python3-click \

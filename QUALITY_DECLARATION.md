@@ -245,7 +245,7 @@ None.
 
 ### Direct Runtime non-ROS Dependencies [5.iii]
 
-- **Java Standard Library**: provided by the Java runtime (OpenJDK 21 or
+- **Java Standard Library**: provided by the Java runtime (OpenJDK 25 or
   later). This is a de facto standard with no quality level concerns.
 - **Apache Commons Math** (`org.apache.commons:commons-math3:3.6.1`): provides
   the `Vector2D` type used throughout the public API. This is a widely-used,

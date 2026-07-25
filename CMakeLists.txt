@@ -53,7 +53,7 @@ endif()
 
 include(CTest)
 
-find_package(Java 21 REQUIRED COMPONENTS Development)
+find_package(Java 25 REQUIRED COMPONENTS Development)
 include(UseJava)
 
 option(WARNINGS_AS_ERRORS "Turn compiler warnings into errors" OFF)
@@ -157,7 +157,7 @@ set(CPACK_DEBIAN_PACKAGE_HOMEPAGE ${PROJECT_HOMEPAGE_URL})
 set(CPACK_DEBIAN_PACKAGE_SECTION contrib/java)
 
 set(CPACK_FREEBSD_PACKAGE_CATEGORIES java)
-set(CPACK_FREEBSD_PACKAGE_DEPS "java/openjdk21" "math/apache-commons-math")
+set(CPACK_FREEBSD_PACKAGE_DEPS "java/openjdk25" "math/apache-commons-math")
 set(CPACK_FREEBSD_PACKAGE_LICENSE APACHE20)
 set(CPACK_FREEBSD_PACKAGE_ORIGIN "java/${CPACK_PACKAGE_NAME}")
 set(CPACK_FREEBSD_PACKAGE_WWW ${PROJECT_HOMEPAGE_URL})
@@ -165,7 +165,7 @@ set(CPACK_FREEBSD_PACKAGE_WWW ${PROJECT_HOMEPAGE_URL})
 set(CPACK_RPM_FILE_NAME RPM-DEFAULT)
 set(CPACK_RPM_PACKAGE_ARCHITECTURE noarch)
 set(CPACK_RPM_PACKAGE_LICENSE "ASL 2.0")
-set(CPACK_RPM_PACKAGE_REQUIRES "apache-commons-math >= 3.6.1, java-headless >= 1:21")
+set(CPACK_RPM_PACKAGE_REQUIRES "apache-commons-math >= 3.6.1, java-headless >= 25")
 set(CPACK_RPM_PACKAGE_URL ${PROJECT_HOMEPAGE_URL})
 
 include(CPack)
