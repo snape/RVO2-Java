@@ -40,6 +40,9 @@ module(
 )
 
 bazel_dep(name = "rules_java", version = "9.7.0")
+
+register_toolchains("@rules_java//java:all")
+
 bazel_dep(name = "rules_jvm_external", version = "7.1")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
