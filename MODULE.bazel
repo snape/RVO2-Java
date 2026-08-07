@@ -39,7 +39,7 @@ module(
     version = "2.0.0",
 )
 
-bazel_dep(name = "rules_java", version = "9.7.0")
+bazel_dep(name = "rules_java", version = "9.7.1")
 
 register_toolchains("@rules_java//java:all")
 
