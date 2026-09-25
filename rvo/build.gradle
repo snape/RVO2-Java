@@ -61,7 +61,7 @@ jar {
 }
 
 compileJava {
-    options.release = 11
+    options.release = 25
 }
 
 javadoc {
