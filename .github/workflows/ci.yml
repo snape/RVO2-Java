@@ -572,7 +572,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v7
       - name: setup-java
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           distribution: microsoft
           java-version: 25
@@ -844,7 +844,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v7
       - name: setup-java
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           distribution: microsoft
           java-version: 25
