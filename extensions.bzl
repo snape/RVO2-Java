@@ -39,9 +39,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 def _non_module_deps_implementation(ctx):
     http_archive(
         name = "google_bazel_common",
-        sha256 = "075660a1ce5c06ec6d113c8fd2decdacfc84c69bdaf3f0842fd724ebbef55251",
-        strip_prefix = "bazel-common-8ae1b9270ebb7562cfbd7d90e1159e582d89a36d",
-        urls = ["https://github.com/google/bazel-common/archive/8ae1b9270ebb7562cfbd7d90e1159e582d89a36d.tar.gz"],
+        sha256 = "cccd012ebe15d90cdb91e4e72e15fc63595b5cb305afec14bad0c092d36a3578",
+        strip_prefix = "bazel-common-da4cd172c844869809c608b4aae18500773bffa8",
+        urls = ["https://github.com/google/bazel-common/archive/da4cd172c844869809c608b4aae18500773bffa8.tar.gz"],
     )
 
 non_module_deps = module_extension(
