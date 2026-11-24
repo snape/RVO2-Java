@@ -120,8 +120,9 @@ and on a daily schedule:
 
 - [`.github/workflows/ci.yml`](.github/workflows/ci.yml): builds and tests
   with Bazel, CMake, and Gradle on AlmaLinux, Arch Linux, Fedora, openSUSE,
-  and Ubuntu (amd64 and arm64), and macOS (arm64); CMake and Gradle
-  additionally on Alpine Linux (amd64) and Windows (amd64). CMake builds
+  Ubuntu (amd64 and arm64), macOS (arm64), and Windows (amd64 and
+  arm64); CMake and Gradle additionally on Alpine Linux (amd64). CMake
+  builds
   enable `BUILD_DOCUMENTATION`, `BUILD_TESTING`, and `WARNINGS_AS_ERRORS`.
 - [`.github/workflows/codeql.yml`](.github/workflows/codeql.yml): runs GitHub
   CodeQL semantic code analysis for Java on a weekly schedule.
@@ -259,16 +260,16 @@ None.
 `RVO2 Library Java` is built and tested continuously via GitHub Actions on the
 following platforms:
 
-| Platform       | Architecture | Build System         |
-|----------------|--------------|----------------------|
-| AlmaLinux 10   | amd64        | Bazel, CMake, Gradle |
-| Alpine Linux   | amd64        | CMake, Gradle        |
-| Arch Linux     | amd64        | Bazel, CMake, Gradle |
-| Fedora         | amd64        | Bazel, CMake, Gradle |
-| openSUSE Leap  | amd64        | Bazel, CMake, Gradle |
-| Ubuntu         | amd64, arm64 | Bazel, CMake, Gradle |
-| macOS          | arm64        | Bazel, CMake, Gradle |
-| Windows        | amd64        | CMake, Gradle        |
+| Platform       | Architecture  | Build System         |
+|----------------|---------------|----------------------|
+| AlmaLinux      | amd64         | Bazel, CMake, Gradle |
+| Alpine Linux   | amd64         | CMake, Gradle        |
+| Arch Linux     | amd64         | Bazel, CMake, Gradle |
+| Fedora         | amd64         | Bazel, CMake, Gradle |
+| openSUSE Leap  | amd64         | Bazel, CMake, Gradle |
+| Ubuntu         | amd64, arm64  | Bazel, CMake, Gradle |
+| macOS          | arm64         | Bazel, CMake, Gradle |
+| Windows        | amd64, arm64  | Bazel, CMake, Gradle |
 
 ## Security [7]
 

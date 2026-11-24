@@ -31,6 +31,9 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
+build --@rules_python//python/config_settings:bootstrap_impl=script
+build --incompatible_default_to_explicit_init_py=true
+
 build --javacopt "--release 25"
 
 build --javacopt "-Xep:AlwaysThrows:ERROR"

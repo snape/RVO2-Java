@@ -34,16 +34,18 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
-if(BUILD_TESTING)
-  get_target_property(RVOJava_RVO_JAR_FILE RVO JAR_FILE)
-  get_filename_component(RVOJava_RVO_JAR_FILE_NAME "${RVOJava_RVO_JAR_FILE}"
+option(BUILD_EXAMPLES "Build examples" ${PROJECT_IS_TOP_LEVEL})
+
+if(BUILD_EXAMPLES)
+  get_target_property(RVOJava_RVOJava_JAR_FILE RVOJava JAR_FILE)
+  get_filename_component(RVOJava_RVOJava_JAR_FILE_NAME "${RVOJava_RVOJava_JAR_FILE}"
     NAME)
 
   configure_file(Circle.MANIFEST.MF.in Circle.MANIFEST.MF)
 
   add_jar(Circle
     SOURCES ${RVOJava_JAR_CLASSES_PREFIX}/examples/Circle.java
-    INCLUDE_JARS RVO
+    INCLUDE_JARS RVOJava
     ENTRY_POINT ${RVOJava_PACKAGE_NAME}.examples.Circle
     OUTPUT_NAME circle
     MANIFEST "${CMAKE_CURRENT_BINARY_DIR}/Circle.MANIFEST.MF")

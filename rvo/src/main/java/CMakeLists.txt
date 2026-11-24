@@ -36,7 +36,7 @@
 
 configure_file(RVO.MANIFEST.MF.in RVO.MANIFEST.MF)
 
-add_jar(RVO
+add_jar(RVOJava
   SOURCES
     ${RVOJava_JAR_CLASSES_PREFIX}/Agent.java
     ${RVOJava_JAR_CLASSES_PREFIX}/KdTree.java
@@ -49,32 +49,32 @@ add_jar(RVO
   VERSION ${PROJECT_VERSION}
   OUTPUT_NAME rvo)
 
-export_jars(TARGETS RVO
+export_jars(TARGETS RVOJava
   NAMESPACE ${PROJECT_NAME}::
   FILE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake")
 
-if(WIN32)
-  set_target_properties(RVO PROPERTIES
-    INSTALL_DESTINATION share/java)
-  get_target_property(RVOJava_RVO_JAR_FILE RVO JAR_FILE)
-  install(FILES "${RVOJava_RVO_JAR_FILE}"
-    DESTINATION share/java
-    COMPONENT runtime)
-else()
-  install_jar(RVO
-    DESTINATION share/java
-    COMPONENT runtime)
+if(ENABLE_INSTALLATION)
+  if(WIN32)
+    set_target_properties(RVOJava PROPERTIES
+      INSTALL_DESTINATION share/java)
+    get_target_property(RVOJava_RVOJava_JAR_FILE RVOJava JAR_FILE)
+    install(FILES "${RVOJava_RVOJava_JAR_FILE}"
+      DESTINATION share/java
+      COMPONENT runtime)
+  else()
+    install_jar(RVOJava
+      DESTINATION share/java
+      COMPONENT runtime)
+  endif()
+
+  install_jar_exports(TARGETS RVOJava
+    NAMESPACE ${PROJECT_NAME}::
+    FILE ${PROJECT_NAME}Targets.cmake
+    DESTINATION ${RVOJava_DIR}
+    COMPONENT development)
 endif()
 
-install_jar_exports(TARGETS RVO
-  NAMESPACE ${PROJECT_NAME}::
-  FILE ${PROJECT_NAME}Targets.cmake
-  DESTINATION ${RVOJava_DIR}
-  COMPONENT development)
-
-option(BUILD_DOCUMENTATION "Build documentation" OFF)
-
-if(BUILD_DOCUMENTATION)
+if(BUILD_DOCUMENTATION AND ENABLE_INSTALLATION)
   create_javadoc(api
     PACKAGES ${RVOJava_PACKAGE_NAME}
     SOURCEPATH "${CMAKE_CURRENT_SOURCE_DIR}"
