@@ -69,7 +69,7 @@ pkg_files(
     name = "doc",
     srcs = ["LICENSE"],
     attributes = pkg_attributes(mode = "0644"),
-    prefix = "usr/share/doc/rvo-java",
+    prefix = "usr/share/doc/rvojava",
 )
 
 pkg_tar(
@@ -93,5 +93,6 @@ pkg_deb(
     package = "rvojava",
     priority = "optional",
     section = "contrib/java",
+    target_compatible_with = ["@platforms//os:linux"],
     version = "2.0.0",
 )

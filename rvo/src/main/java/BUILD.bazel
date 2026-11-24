@@ -59,7 +59,7 @@ java_library(
     name = "rvo",
     srcs = [":srcs"],
     visibility = ["//visibility:public"],
-    deps = ["@rvo_java_maven//:org_apache_commons_commons_math3"],
+    deps = ["@rvojava_maven//:org_apache_commons_commons_math3"],
 )
 
 javadoc_library(
@@ -67,7 +67,7 @@ javadoc_library(
     srcs = [":srcs"],
     external_javadoc_links = ["https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/"],
     tags = ["requires-network"],
-    deps = ["@rvo_java_maven//:org_apache_commons_commons_math3"],
+    deps = ["@rvojava_maven//:org_apache_commons_commons_math3"],
 )
 
 pkg_files(

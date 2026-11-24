@@ -51,6 +51,6 @@ java_test(
     use_testrunner = False,
     deps = [
         "//rvo/src/main/java:rvo",
-        "@rvo_java_maven//:org_apache_commons_commons_math3",
+        "@rvojava_maven//:org_apache_commons_commons_math3",
     ],
 )

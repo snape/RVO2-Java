@@ -65,27 +65,30 @@ endif()
 set(CMAKE_JAVA_TARGET_OUTPUT_DIR "${PROJECT_BINARY_DIR}/java")
 file(MAKE_DIRECTORY "${CMAKE_JAVA_TARGET_OUTPUT_DIR}")
 
-include(FetchContent)
+if(NOT RVOJava_COMMONS_MATH3_JAR_FILE)
+  include(FetchContent)
 
-# cmake-lint: disable=C0301
-FetchContent_Declare(org_apache_commons_commons_math3
-  DOWNLOAD_NO_EXTRACT ON
-  URL https://repo1.maven.org/maven2/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar
-  URL_HASH SHA256=1e56d7b058d28b65abd256b8458e3885b674c1d588fa43cd7d1cbb9c7ef2b308
-)
+  # cmake-lint: disable=C0301
+  FetchContent_Declare(org_apache_commons_commons_math3
+    DOWNLOAD_NO_EXTRACT ON
+    URL https://repo1.maven.org/maven2/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar
+    URL_HASH SHA256=1e56d7b058d28b65abd256b8458e3885b674c1d588fa43cd7d1cbb9c7ef2b308
+  )
 
-FetchContent_MakeAvailable(org_apache_commons_commons_math3)
+  FetchContent_MakeAvailable(org_apache_commons_commons_math3)
 
-find_jar(RVOJava_COMMONS_MATH3_JAR_FILE
-  NAMES commons-math3
-  PATHS "${org_apache_commons_commons_math3_SOURCE_DIR}"
-  VERSIONS 3.6.1)
+  find_jar(RVOJava_COMMONS_MATH3_JAR_FILE
+    NAMES commons-math3
+    PATHS "${org_apache_commons_commons_math3_SOURCE_DIR}"
+    VERSIONS 3.6.1)
 
-if(RVOJava_COMMONS_MATH3_JAR_FILE)
-  message(STATUS
-    "Found commons-math3 JAR file: ${RVOJava_COMMONS_MATH3_JAR_FILE}")
-else()
-  message(FATAL_ERROR "Could NOT find commons-math3 JAR file")
+  if(RVOJava_COMMONS_MATH3_JAR_FILE)
+    message(STATUS
+      "Found commons-math3 JAR file: ${RVOJava_COMMONS_MATH3_JAR_FILE}")
+    mark_as_advanced(RVOJava_COMMONS_MATH3_JAR_FILE)
+  else()
+    message(FATAL_ERROR "Could NOT find commons-math3 JAR file")
+  endif()
 endif()
 
 configure_file("${RVOJava_COMMONS_MATH3_JAR_FILE}"
@@ -104,68 +107,77 @@ set(RVOJava_JAR_CLASSES_PREFIX edu/unc/cs/gamma/rvo)
 string(REPLACE "/" "." RVOJava_PACKAGE_NAME ${RVOJava_JAR_CLASSES_PREFIX})
 set(RVOJava_PACKAGE_VENDOR "University of North Carolina at Chapel Hill")
 
+option(BUILD_DOCUMENTATION "Build documentation" OFF)
+option(ENABLE_INSTALLATION "Enable installation" ${PROJECT_IS_TOP_LEVEL})
+
 add_subdirectory(rvo/src/main/java)
 add_subdirectory(blocks/src/main/java)
 add_subdirectory(circle/src/main/java)
 
-install(FILES LICENSE
-  COMPONENT runtime
-  DESTINATION ${RVOJava_DOC_DIR})
+if(ENABLE_INSTALLATION)
+  install(FILES LICENSE
+    COMPONENT runtime
+    DESTINATION ${RVOJava_DOC_DIR})
 
-install(FILES "${RVOJava_COMMONS_MATH3_JAR_FILE}"
-  COMPONENT runtime
-  DESTINATION share/java)
+  install(FILES "${RVOJava_COMMONS_MATH3_JAR_FILE}"
+    COMPONENT runtime
+    DESTINATION share/java)
 
-include(CMakePackageConfigHelpers)
+  include(CMakePackageConfigHelpers)
 
-configure_package_config_file(
-  ${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake
-  INSTALL_DESTINATION ${RVOJava_DIR})
+  configure_package_config_file(
+    ${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake
+    INSTALL_DESTINATION ${RVOJava_DIR})
 
-write_basic_package_version_file(${PROJECT_NAME}ConfigVersion.cmake
-  COMPATIBILITY SameMajorVersion)
+  write_basic_package_version_file(${PROJECT_NAME}ConfigVersion.cmake
+    COMPATIBILITY SameMajorVersion)
 
-install(FILES
-  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-  COMPONENT development
-  DESTINATION ${RVOJava_DIR})
+  install(FILES
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    COMPONENT development
+    DESTINATION ${RVOJava_DIR})
+endif()
 
-include(InstallRequiredSystemLibraries)
+option(ENABLE_PACKAGING "Enable packaging" ${PROJECT_IS_TOP_LEVEL})
 
-set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_CONTACT "Jamie Snape")
-set(CPACK_PACKAGE_VENDOR "${RVOJava_PACKAGE_VENDOR}")
-set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_DESCRIPTION}")
-set(CPACK_PACKAGE_CHECKSUM SHA256)
-set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
-set(CPACK_STRIP_FILES ON)
+if(ENABLE_PACKAGING)
+  include(InstallRequiredSystemLibraries)
 
-set(CPACK_SOURCE_IGNORE_FILES
-  _build/ \\\\.git/ \\\\.gitattributes \\\\.github/ \\\\.gitignore bazel-
-  Brewfile)
-set(CPACK_SOURCE_STRIP_FILES ON)
+  set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+  set(CPACK_PACKAGE_CONTACT "Jamie Snape")
+  set(CPACK_PACKAGE_VENDOR "${RVOJava_PACKAGE_VENDOR}")
+  set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+  set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+  set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+  set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_DESCRIPTION}")
+  set(CPACK_PACKAGE_CHECKSUM SHA256)
+  set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/LICENSE")
+  set(CPACK_STRIP_FILES ON)
 
-set(CPACK_DEBIAN_COMPRESSION_TYPE zstd)
-set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
-set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE all)
-set(CPACK_DEBIAN_PACKAGE_DEPENDS libcommons-math3-java)
-set(CPACK_DEBIAN_PACKAGE_HOMEPAGE ${PROJECT_HOMEPAGE_URL})
-set(CPACK_DEBIAN_PACKAGE_SECTION contrib/java)
+  set(CPACK_SOURCE_IGNORE_FILES
+    _build/ \\\\.git/ \\\\.gitattributes \\\\.github/ \\\\.gitignore bazel-
+    Brewfile)
+  set(CPACK_SOURCE_STRIP_FILES ON)
 
-set(CPACK_FREEBSD_PACKAGE_CATEGORIES java)
-set(CPACK_FREEBSD_PACKAGE_DEPS "java/openjdk25" "math/apache-commons-math")
-set(CPACK_FREEBSD_PACKAGE_LICENSE APACHE20)
-set(CPACK_FREEBSD_PACKAGE_ORIGIN "java/${CPACK_PACKAGE_NAME}")
-set(CPACK_FREEBSD_PACKAGE_WWW ${PROJECT_HOMEPAGE_URL})
+  set(CPACK_DEBIAN_COMPRESSION_TYPE zstd)
+  set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+  set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE all)
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS libcommons-math3-java)
+  set(CPACK_DEBIAN_PACKAGE_HOMEPAGE ${PROJECT_HOMEPAGE_URL})
+  set(CPACK_DEBIAN_PACKAGE_SECTION contrib/java)
 
-set(CPACK_RPM_FILE_NAME RPM-DEFAULT)
-set(CPACK_RPM_PACKAGE_ARCHITECTURE noarch)
-set(CPACK_RPM_PACKAGE_LICENSE "ASL 2.0")
-set(CPACK_RPM_PACKAGE_REQUIRES "apache-commons-math >= 3.6.1, java-headless >= 25")
-set(CPACK_RPM_PACKAGE_URL ${PROJECT_HOMEPAGE_URL})
+  set(CPACK_FREEBSD_PACKAGE_CATEGORIES java)
+  set(CPACK_FREEBSD_PACKAGE_DEPS "java/openjdk25" "math/apache-commons-math")
+  set(CPACK_FREEBSD_PACKAGE_LICENSE APACHE20)
+  set(CPACK_FREEBSD_PACKAGE_ORIGIN "java/${CPACK_PACKAGE_NAME}")
+  set(CPACK_FREEBSD_PACKAGE_WWW ${PROJECT_HOMEPAGE_URL})
 
-include(CPack)
+  set(CPACK_RPM_FILE_NAME RPM-DEFAULT)
+  set(CPACK_RPM_PACKAGE_ARCHITECTURE noarch)
+  set(CPACK_RPM_PACKAGE_LICENSE "ASL 2.0")
+  set(CPACK_RPM_PACKAGE_REQUIRES "apache-commons-math >= 3.6.1, java-headless >= 25")
+  set(CPACK_RPM_PACKAGE_URL ${PROJECT_HOMEPAGE_URL})
+
+  include(CPack)
+endif()

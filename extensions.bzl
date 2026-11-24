@@ -34,9 +34,11 @@
 # <https://gamma.cs.unc.edu/RVO2/>
 #
 
+"""Module extensions for non-BCR dependencies."""
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-def _non_module_deps_implementation(ctx):
+def _non_module_deps_implementation(_ctx):
     http_archive(
         name = "google_bazel_common",
         sha256 = "801b1b4d6b80de5e55af60b4af52507fc80614ab7f43ed5ef22bca56436c97ea",
