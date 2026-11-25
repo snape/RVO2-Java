@@ -118,12 +118,16 @@ maintainer [@snape](https://github.com/snape) before merging.
 CI is performed via GitHub Actions on every push and pull request to `main`,
 and on a daily schedule:
 
-- [`.github/workflows/ci.yml`](.github/workflows/ci.yml): builds and tests
-  with Bazel, CMake, and Gradle on AlmaLinux, Arch Linux, Fedora, openSUSE,
-  Ubuntu (amd64 and arm64), macOS (arm64), and Windows (amd64 and
-  arm64); CMake and Gradle additionally on Alpine Linux (amd64). CMake
-  builds
+- [`.github/workflows/bazel.yml`](.github/workflows/bazel.yml): builds and tests
+  with Bazel on AlmaLinux, Arch Linux, Fedora, openSUSE, Ubuntu
+  (amd64 and arm64), macOS (arm64), and Windows (amd64 and arm64).
+- [`.github/workflows/cmake.yml`](.github/workflows/cmake.yml): builds and tests
+  with CMake on AlmaLinux, Alpine Linux, Arch Linux, Fedora, openSUSE, Ubuntu
+  (amd64 and arm64), macOS (arm64), and Windows (amd64 and arm64). CMake builds
   enable `BUILD_DOCUMENTATION`, `BUILD_TESTING`, and `WARNINGS_AS_ERRORS`.
+- [`.github/workflows/gradle.yml`](.github/workflows/gradle.yml): builds and tests
+  with Gradle on AlmaLinux, Alpine Linux, Arch Linux, Fedora, openSUSE, Ubuntu
+  (amd64 and arm64), macOS (arm64), and Windows (amd64 and arm64).
 - [`.github/workflows/codeql.yml`](.github/workflows/codeql.yml): runs GitHub
   CodeQL semantic code analysis for Java on a weekly schedule.
 

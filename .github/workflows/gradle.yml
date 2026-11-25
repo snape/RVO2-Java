@@ -1,0 +1,367 @@
+#
+# gradle.yml
+# RVO2 Library Java
+#
+# SPDX-FileCopyrightText: 2008 University of North Carolina at Chapel Hill
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Please send all bug reports to <geom@cs.unc.edu>.
+#
+# The authors may be contacted via:
+#
+# Jur van den Berg, Stephen J. Guy, Jamie Snape, Ming C. Lin, Dinesh Manocha
+# Dept. of Computer Science
+# 201 S. Columbia St.
+# Frederick P. Brooks, Jr. Computer Science Bldg.
+# Chapel Hill, N.C. 27599-3175
+# United States of America
+#
+# <https://gamma.cs.unc.edu/RVO2/>
+#
+
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+---
+name: gradle
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: '20 5 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  gradle-almalinux:
+    name: gradle almalinux amd64
+    runs-on: ubuntu-latest
+    container: almalinux:10
+    timeout-minutes: 30
+    steps:
+      - name: setup
+        run: |
+          dnf makecache -q --refresh || (sleep 15; dnf makecache -q --refresh)
+          dnf upgrade -q -y
+          dnf install -q -y \
+            ca-certificates \
+            git \
+            java-25-openjdk-devel
+          dnf clean all
+          rm -rf /var/cache/yum
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: almalinux-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}  # yamllint disable-line rule:line-length
+          restore-keys: almalinux-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-alpine:
+    name: gradle alpine linux amd64
+    runs-on: ubuntu-latest
+    container: alpine:3
+    timeout-minutes: 30
+    steps:
+      - name: setup
+        run: |
+          apk upgrade -q --no-cache || (sleep 15; apk upgrade -q --no-cache)
+          (apk add -q --no-cache \
+            ca-certificates \
+            git \
+            openjdk25) || (sleep 15; apk add -q --no-cache \
+            ca-certificates \
+            git \
+            openjdk25)
+        shell: sh
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: alpine-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}  # yamllint disable-line rule:line-length
+          restore-keys: alpine-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: sh
+
+  gradle-arch:
+    name: gradle arch linux amd64
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    timeout-minutes: 30
+    steps:
+      - name: setup
+        run: |
+          pacman --needed --noconfirm --noprogressbar -S -u -y \
+            ca-certificates \
+            git \
+            jdk25-openjdk
+          rm -rf \
+            /var/cache/pacman/pkg/* \
+            /var/lib/pacman/sync/*
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: arch-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}  # yamllint disable-line rule:line-length
+          restore-keys: arch-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-fedora:
+    name: gradle fedora linux amd64
+    runs-on: ubuntu-latest
+    container: fedora:44
+    timeout-minutes: 30
+    steps:
+      - name: setup
+        run: |
+          dnf makecache -q --refresh || (sleep 15; dnf makecache -q --refresh)
+          dnf upgrade -q -y
+          dnf install -q -y \
+            ca-certificates \
+            git \
+            java-25-openjdk-devel
+          dnf clean all
+          rm -rf /var/cache/yum
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: fedora-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}  # yamllint disable-line rule:line-length
+          restore-keys: fedora-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-macos:
+    name: gradle macos arm64
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - name: setup
+        run: |
+          brew update -q || (sleep 15; brew update -q)
+          brew install -q \
+            git \
+            openjdk
+          java_home="$(brew --prefix openjdk)/libexec/openjdk.jdk/Contents/Home"
+          echo "JAVA_HOME=${java_home}" >> "$GITHUB_ENV"
+          echo "$(brew --prefix openjdk)/bin" >> "$GITHUB_PATH"
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_NO_ANALYTICS: 1
+          HOMEBREW_NO_AUTO_UPDATE: 1
+          HOMEBREW_NO_INSTALL_CLEANUP: 1
+        shell: zsh -efuo pipefail {0}
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-${{ runner.arch }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}  # yamllint disable-line rule:line-length
+          restore-keys: ${{ runner.os }}-${{ runner.arch }}-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: zsh -efuo pipefail {0}
+
+  gradle-opensuse:
+    name: gradle opensuse leap amd64
+    runs-on: ubuntu-latest
+    container: opensuse/leap:16.1
+    timeout-minutes: 30
+    steps:
+      - name: setup
+        run: |
+          zypper -n -q ref || (sleep 15; zypper -n -q ref)
+          zypper -n -q up
+          zypper -n -q in --no-recommends \
+            ca-certificates \
+            git \
+            java-25-openjdk-devel
+          zypper -n -q cc -a
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: opensuse-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}  # yamllint disable-line rule:line-length
+          restore-keys: opensuse-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-ubuntu:
+    name: gradle ubuntu amd64
+    runs-on: ubuntu-latest
+    container: ubuntu:26.04
+    timeout-minutes: 30
+    steps:
+      - name: setup
+        run: |
+          apt-get -qq -o APT::Acquire::Retries=4 update \
+            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+            upgrade
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+              --no-install-recommends install \
+            ca-certificates \
+            git \
+            openjdk-25-jdk
+          apt-get -qq -o Dpkg::Use-Pty=0 autoremove
+          rm -rf /var/lib/apt/lists/*
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ubuntu-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}  # yamllint disable-line rule:line-length
+          restore-keys: ubuntu-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-ubuntu-arm64:
+    name: gradle ubuntu arm64
+    runs-on: ubuntu-26.04-arm
+    container: ubuntu:26.04
+    timeout-minutes: 30
+    steps:
+      - name: setup
+        run: |
+          apt-get -qq -o APT::Acquire::Retries=4 update \
+            || (sleep 15; apt-get -qq -o APT::Acquire::Retries=4 update)
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+            upgrade
+          apt-get -qq -o APT::Acquire::Retries=4 -o Dpkg::Use-Pty=0 \
+              --no-install-recommends install \
+            ca-certificates \
+            git \
+            openjdk-25-jdk
+          apt-get -qq -o Dpkg::Use-Pty=0 autoremove
+          rm -rf /var/lib/apt/lists/*
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        shell: bash
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ubuntu-arm64-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}  # yamllint disable-line rule:line-length
+          restore-keys: ubuntu-arm64-gradle-
+      - name: build package
+        run: ./gradlew build --no-daemon
+        shell: bash
+
+  gradle-windows:
+    name: gradle windows amd64
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: setup-java
+        uses: actions/setup-java@v6
+        with:
+          distribution: microsoft
+          java-version: 25
+          cache: gradle
+      - name: build package
+        run: gradlew.bat build --no-daemon
+        shell: cmd
+
+  gradle-windows-arm64:
+    name: gradle windows arm64
+    runs-on: windows-11-arm
+    timeout-minutes: 30
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: setup-java
+        uses: actions/setup-java@v6
+        with:
+          distribution: microsoft
+          java-version: 25
+          cache: gradle
+      - name: build package
+        run: gradlew.bat build --no-daemon
+        shell: cmd
