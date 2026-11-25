@@ -60,14 +60,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
       - name: setup
         run: echo "JAVA_HOME=$JAVA_HOME_25_X64" >> "$GITHUB_ENV"
       - name: initialize codeql
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@v4.39.5
         with:
           languages: java
       - name: autobuild
-        uses: github/codeql-action/autobuild@v4
+        uses: github/codeql-action/autobuild@v4.39.5
       - name: perform codeql analysis
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@v4.39.5
