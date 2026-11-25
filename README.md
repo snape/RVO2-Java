@@ -80,7 +80,9 @@ specifies static obstacles, agents, and the preferred velocities of the agents.
 The simulation is performed step-by-step via a simple call to the library. The
 simulation is fully accessible and manipulable during runtime.
 
-![Build Status](https://github.com/snape/RVO2-Java/actions/workflows/ci.yml/badge.svg?branch=main)
+![Bazel](https://github.com/snape/RVO2-Java/actions/workflows/bazel.yml/badge.svg?branch=main)
+![CMake](https://github.com/snape/RVO2-Java/actions/workflows/cmake.yml/badge.svg?branch=main)
+![Gradle](https://github.com/snape/RVO2-Java/actions/workflows/gradle.yml/badge.svg?branch=main)
 
 <!-- REUSE-IgnoreStart -->
 SPDX-FileCopyrightText: 2008 University of North Carolina at Chapel Hill  
